@@ -244,6 +244,22 @@ form{display:grid;grid-template-columns:1fr 1fr;gap:34px 36px}
 label{font-size:clamp(11px,.97vw,14px);font-weight:200;letter-spacing:.06em;text-transform:uppercase;color:#fff}
 input,textarea{background:transparent;border:0;border-bottom:1px solid #8c8883;color:#fff;font-family:inherit;font-size:16px;padding:8px 0;outline:none;resize:vertical;width:100%}
 input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
+input:focus-visible,textarea:focus-visible{outline:none}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+fieldset.field{border:0;margin:0;padding:0}
+fieldset.field legend{padding:0;margin-bottom:12px;font-size:clamp(11px,.97vw,14px);font-weight:200;letter-spacing:.06em;text-transform:uppercase;color:#fff}
+legend small,label small{text-transform:none;letter-spacing:0;color:#a9a49e;font-weight:200}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inherit;cursor:pointer}
+.chip input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.chip span{display:inline-block;padding:.6em 1.15em;border:1px solid #6d6a66;border-radius:999px;font-size:13px;font-weight:300;color:#e7e3df;line-height:1.2;transition:border-color .2s,background .2s,color .2s}
+.chip:hover span{border-color:var(--gold-2)}
+.chip input:checked+span{background:var(--gold-grad);border-color:transparent;color:#1a1a1a;font-weight:600}
+.chip input:focus-visible+span{outline:2px solid var(--gold-2);outline-offset:2px}
+.chips .otro{flex:1 1 160px;min-width:140px}
+.formside input{color-scheme:dark}
+.formside ::placeholder{color:#8c8883;opacity:1}
 .send{grid-column:1/-1;justify-self:end;background:none;border:0;color:#fff;cursor:pointer;padding:4px;display:flex;align-items:center;gap:10px;font-family:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
 .send svg{width:26px}
 .send:hover{color:var(--gold-2)}
@@ -477,7 +493,40 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
         <div class="field full"><label for="f-nombre">Nombre y apellido</label><input id="f-nombre" name="nombre" autocomplete="name" required></div>
         <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel"></div>
-        <div class="field full"><label for="f-msg">Mensaje</label><textarea id="f-msg" name="mensaje" rows="2"></textarea></div>
+        <fieldset class="field full"><legend>Tipo de evento</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="tipo" value="Matrimonio"><span>Matrimonio</span></label>
+            <label class="chip"><input type="radio" name="tipo" value="Ceremonia religiosa"><span>Ceremonia religiosa</span></label>
+            <label class="chip"><input type="radio" name="tipo" value="Evento corporativo"><span>Evento corporativo</span></label>
+            <label class="chip"><input type="radio" name="tipo" value="Cumpleaños o aniversario"><span>Cumpleaños o aniversario</span></label>
+            <label class="chip"><input type="radio" name="tipo" value="Cóctel o recepción"><span>Cóctel o recepción</span></label>
+            <label class="chip"><input type="radio" name="tipo" value="Funeral o despedida"><span>Funeral o despedida</span></label>
+            <label class="chip"><input type="radio" name="tipo" value="Otro" id="f-tipo-otro"><span>Otro</span></label>
+            <input class="otro" id="f-otro" name="tipo_otro" placeholder="¿Cuál?" aria-label="Otro tipo de evento" hidden>
+          </div>
+        </fieldset>
+        <div class="field"><label for="f-fecha">Fecha del evento</label><input id="f-fecha" name="fecha" type="date"></div>
+        <div class="field"><label for="f-lugar">Comuna o ciudad</label><input id="f-lugar" name="lugar" autocomplete="address-level2"></div>
+        <fieldset class="field full"><legend>Momento a musicalizar <small>(puedes elegir varios)</small></legend>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="momento" value="Ceremonia"><span>Ceremonia</span></label>
+            <label class="chip"><input type="checkbox" name="momento" value="Cóctel"><span>Cóctel</span></label>
+            <label class="chip"><input type="checkbox" name="momento" value="Cena"><span>Cena</span></label>
+            <label class="chip"><input type="checkbox" name="momento" value="Entrada o salida"><span>Entrada o salida</span></label>
+            <label class="chip"><input type="checkbox" name="momento" value="Todo el evento"><span>Todo el evento</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="field full"><legend>Estilo musical</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="estilo" value="Clásico"><span>Clásico</span></label>
+            <label class="chip"><input type="radio" name="estilo" value="Covers pop"><span>Covers pop</span></label>
+            <label class="chip"><input type="radio" name="estilo" value="Bandas sonoras"><span>Bandas sonoras</span></label>
+            <label class="chip"><input type="radio" name="estilo" value="Mixto"><span>Mixto</span></label>
+            <label class="chip"><input type="radio" name="estilo" value="Lo dejo a su criterio"><span>Lo dejo a su criterio</span></label>
+          </div>
+        </fieldset>
+        <div class="field"><label for="f-inv">N° aproximado de invitados</label><input id="f-inv" name="invitados" type="number" min="1" inputmode="numeric" placeholder="Ej: 120"></div>
+        <div class="field full"><label for="f-msg">Cuéntanos más</label><textarea id="f-msg" name="mensaje" rows="3" placeholder="Canciones especiales, horarios, ideas o lo que quieras contarnos"></textarea></div>
         <button class="send" type="submit" aria-label="Enviar mensaje">Enviar <svg viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M0 10h24M15 1l9 9-9 9"/></svg></button>
         <p class="note" id="fnote" role="status"></p>
       </form>
@@ -653,6 +702,11 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
   // La llave es pública por diseño: solo permite enviar mensajes a ese correo.
   const W3F_KEY='26f74c57-41bd-44f5-abaf-25cd0678e161';
   const form=document.getElementById('cform');
+  const otro=document.getElementById('f-otro');
+  form.querySelectorAll('input[name="tipo"]').forEach(r=>r.addEventListener('change',()=>{
+    otro.hidden=!document.getElementById('f-tipo-otro').checked;
+    if(!otro.hidden) otro.focus();
+  }));
   form.addEventListener('submit',async e=>{
     e.preventDefault();
     const n=document.getElementById('fnote');
@@ -662,20 +716,29 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
     try{
       const fd=new FormData(form);
       if(fd.get('botcheck')) return;
+      let tipo=fd.get('tipo')||'';
+      if(tipo==='Otro' && (fd.get('tipo_otro')||'').trim()) tipo='Otro: '+fd.get('tipo_otro').trim();
+      const f=fd.get('fecha')||'', fecha=f?f.split('-').reverse().join('-'):'';
       const data={
         access_key:W3F_KEY,
-        subject:'Nuevo mensaje desde la web: '+nom,
+        subject:'Nuevo mensaje desde la web: '+nom+(tipo?' ('+tipo+')':''),
         from_name:'Sitio web Cuarteto Ludos',
         replyto:em,
         'Nombre':nom,
         'Email':em,
         'Teléfono':fd.get('telefono')||'',
+        'Tipo de evento':tipo,
+        'Fecha del evento':fecha,
+        'Comuna o ciudad':fd.get('lugar')||'',
+        'Momento a musicalizar':fd.getAll('momento').join(', '),
+        'Estilo musical':fd.get('estilo')||'',
+        'Invitados (aprox.)':fd.get('invitados')||'',
         'Mensaje':fd.get('mensaje')||''
       };
       const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
       const j=await r.json().catch(()=>({}));
       if(!r.ok||!j.success) throw new Error(j.message||r.status);
-      form.reset();
+      form.reset(); otro.hidden=true;
       n.textContent='¡Gracias, '+nom.split(' ')[0]+'! Recibimos tu mensaje y te contactaremos pronto.';
     }catch(err){
       n.textContent='No pudimos enviar el mensaje. Escríbenos directamente a cuartetoludos@gmail.com.';
