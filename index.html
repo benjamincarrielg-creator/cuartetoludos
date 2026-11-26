@@ -182,6 +182,18 @@ footer .logo{width:130px}
 @media (max-width:520px){.sound:not(.invite) .lbl{display:none}.sound:not(.invite){padding:0 6px;gap:8px}.sound.on{padding-right:12px}}
 @keyframes marq{to{transform:translateX(-50%)}}
 
+/* Bienvenida: solo aparece si el navegador no deja sonar la música sola */
+.welcome{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;color:var(--light);cursor:pointer;
+  background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);animation:wIn .45s ease;transition:opacity .6s ease}
+.welcome[hidden]{display:none}
+.welcome.out{opacity:0;pointer-events:none}
+@keyframes wIn{from{opacity:0}to{opacity:1}}
+.welcome img{display:block;width:min(300px,62vw);margin:0 auto 22px}
+.welcome p{margin:0 0 30px;text-transform:uppercase;font-weight:500;letter-spacing:.03em;font-size:clamp(13px,1.32vw,19px);line-height:1.3}
+.welcome .btn{font-size:14px;padding:.85em 2.4em}
+.welcome .btn:focus{outline:none}.welcome .btn:focus-visible{box-shadow:0 0 0 4px rgba(226,175,92,.3)}
+.welcome small{display:block;margin-top:24px;font-size:12px;font-weight:300;letter-spacing:.02em;color:#bdbdbd}
+
 /* ---------- VIDEOS ---------- */
 .videos{background:linear-gradient(#141414,#000 40%);color:#fff;text-align:center;padding-block:40px 80px;overflow:hidden}
 .carousel{position:relative;display:flex;justify-content:center;align-items:center}
@@ -478,6 +490,14 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
 </section>
 </main>
 
+<div class="welcome" id="welcome" hidden>
+  <div>
+    <img src="img/logo.png" alt="Ludos Cuarteto">
+    <p>Música elegante para<br>momentos inolvidables</p>
+    <button class="btn" id="enterBtn" type="button">Entrar</button>
+    <small>Esta página tiene música. Puedes silenciarla con el botón «Música».</small>
+  </div>
+</div>
 <audio id="bgm" src="audio/ludos-session-c2.mp3" loop preload="none"></audio>
 <button class="sound" id="soundBtn" type="button" aria-pressed="false" aria-label="Activar música de fondo">
   <span class="ic">
@@ -522,14 +542,17 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
     const m=document.getElementById('f-msg'); if(m && !m.value) m.value=a.dataset.msg;
   }));
 
-  // Música de fondo: suena bajito en todas las secciones.
-  // Los navegadores no dejan reproducir audio antes de que la persona toque la página,
-  // así que parte con el primer toque o clic (salvo que la haya silenciado antes).
+  // Música de fondo: suena bajito en todas las secciones, desde que se entra.
+  // Si el navegador no deja sonar audio antes de que la persona toque la página,
+  // se muestra la bienvenida con "Entrar": ese clic hace partir la música.
+  // Silenciar dura solo esa visita; al volver a entrar suena de nuevo.
   const VOL=0.22;
   const audio=document.getElementById('bgm'), btn=document.getElementById('soundBtn'), pill=document.getElementById('nowPlaying');
-  let ctx=null, gain=null, playing=false;
-  const pref=()=>{try{return localStorage.getItem('ludos-musica')}catch(e){return null}};
-  const savePref=v=>{try{localStorage.setItem('ludos-musica',v)}catch(e){}};
+  const welcome=document.getElementById('welcome'), enterBtn=document.getElementById('enterBtn');
+  let ctx=null, gain=null, playing=false, pending=false;
+  try{ localStorage.removeItem('ludos-musica'); }catch(e){}
+  const pref=()=>{try{return sessionStorage.getItem('ludos-musica')}catch(e){return null}};
+  const savePref=v=>{try{sessionStorage.setItem('ludos-musica',v)}catch(e){}};
   function setUI(on){
     playing=on;
     if(on){ btn.classList.remove('invite'); document.getElementById('soundLbl').textContent='Música'; }
@@ -551,31 +574,54 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
     else { audio.volume=Math.max(0,Math.min(1,v)); }
   }
   async function play(){
+    // Puede llamarse varias veces seguidas (toque + clic): no pasa nada, y así el
+    // intento que sí cuenta como gesto (por ejemplo touchend en celular) logra sonar.
+    pending=true;
     ensureGraph();
     try{ if(ctx&&ctx.state==='suspended') await ctx.resume(); await audio.play(); setUI(true); fadeTo(VOL,2.5); }
     catch(e){ setUI(false); }
+    pending=false;
   }
   function pause(){
     setUI(false); fadeTo(0,.6);
     setTimeout(()=>{ if(!playing) audio.pause(); },650);
   }
-  function toggle(){ if(playing){ pause(); savePref('off'); } else { play(); savePref('on'); } }
+  // Con el primer toque, clic o tecla en cualquier parte, la música parte (si no se silenció).
+  // Se sigue escuchando hasta que logre sonar, por si un intento falla.
+  const EVS=['pointerdown','keydown','touchend','click'];
+  const stopListening=()=>EVS.forEach(t=>document.removeEventListener(t,startOnFirstTouch,true));
+  function startOnFirstTouch(e){
+    if(btn.contains(e.target)||pill.contains(e.target)) return;
+    if(e.type==='keydown' && e.key==='Escape') return;
+    if(pref()==='off' || playing){ stopListening(); return; }
+    play().then(()=>{ if(playing) stopListening(); });
+  }
+  EVS.forEach(t=>document.addEventListener(t,startOnFirstTouch,true));
+  function toggle(){ stopListening(); if(playing){ pause(); savePref('off'); } else { play(); savePref('on'); } }
   btn.addEventListener('click',toggle);
   pill.addEventListener('click',toggle);
-  const startOnFirstTouch=e=>{
-    if(btn.contains(e.target)||pill.contains(e.target)) return;
-    ['pointerdown','keydown','touchend','click'].forEach(t=>document.removeEventListener(t,startOnFirstTouch,true));
-    if(pref()!=='off' && !playing) play();
-  };
-  ['pointerdown','keydown','touchend','click'].forEach(t=>document.addEventListener(t,startOnFirstTouch,true));
+
+  function enter(){
+    if(welcome.hidden || welcome.classList.contains('out')) return;
+    if(!playing) play();
+    welcome.classList.add('out'); document.documentElement.style.overflow='';
+    setTimeout(()=>{ welcome.hidden=true; welcome.classList.remove('out'); },650);
+  }
+  welcome.addEventListener('click',enter);
+  welcome.addEventListener('keydown',e=>{ if(e.key==='Escape') enter(); });
 
   // Intentar que suene apenas se abre la página. Algunos navegadores lo permiten
-  // (por ejemplo, Chrome con visitantes que ya conocen el sitio); si no, parte con el primer toque.
+  // (por ejemplo, Chrome con visitantes que ya conocen el sitio); si no, aparece la bienvenida.
   if(pref()!=='off'){
     audio.preload='auto'; audio.volume=VOL;
-    audio.play().then(()=>{ setUI(true); }).catch(()=>{
+    audio.play().then(()=>{ setUI(true); }).catch(e=>{
+      if(playing || pending) return;
       audio.volume=1;
       btn.classList.add('invite'); document.getElementById('soundLbl').textContent='Activar música';
+      if(e && e.name==='NotAllowedError'){
+        welcome.hidden=false; document.documentElement.style.overflow='hidden';
+        try{ enterBtn.focus({preventScroll:true}); }catch(_){}
+      }
     });
   }
 
