@@ -443,7 +443,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
       <button class="playing" id="nowPlaying" type="button" aria-pressed="false" title="Escuchar o pausar la música">
         <span class="disc"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 18V6l11-2v12" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></span>
         <strong>Ahora suena:</strong>
-        <div class="marq"><span><i>CUARTETO LUDOS – LUDOS SESSION</i><i>CUARTETO LUDOS – LUDOS SESSION</i></span></div>
+        <div class="marq"><span><i>CUARTETO LUDOS – ANOTHER ONE BITES THE DUST (QUEEN)</i><i>CUARTETO LUDOS – ANOTHER ONE BITES THE DUST (QUEEN)</i></span></div>
       </button>
     </div>
     <img class="group" src="img/repertorio.jpg" alt="Los cuatro integrantes de Cuarteto Ludos con sus instrumentos frente a un muro de ladrillo negro">
@@ -547,7 +547,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
     <small>Esta página tiene música. Puedes silenciarla con el botón «Música».</small>
   </div>
 </div>
-<audio id="bgm" src="audio/ludos-session-c2.mp3" loop preload="none"></audio>
+<audio id="bgm" src="audio/ludos-another-one-bites-the-dust.mp3" preload="none"></audio>
 <button class="sound" id="soundBtn" type="button" aria-pressed="false" aria-label="Activar música de fondo">
   <span class="ic">
     <svg class="off-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
@@ -599,6 +599,15 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
   const audio=document.getElementById('bgm'), btn=document.getElementById('soundBtn'), pill=document.getElementById('nowPlaying');
   const welcome=document.getElementById('welcome'), enterBtn=document.getElementById('enterBtn');
   let ctx=null, gain=null, playing=false, pending=false;
+  // Lista de temas: suenan en este orden y al terminar el último vuelve al primero.
+  const TRACKS=[
+    {src:'audio/ludos-another-one-bites-the-dust.mp3', t:'CUARTETO LUDOS – ANOTHER ONE BITES THE DUST (QUEEN)'},
+    {src:'audio/ludos-session-c2.mp3', t:'CUARTETO LUDOS – LUDOS SESSION'}
+  ];
+  let track=0;
+  const marqI=[...pill.querySelectorAll('.marq i')];
+  function setTrack(i){ track=i%TRACKS.length; audio.src=TRACKS[track].src; marqI.forEach(el=>el.textContent=TRACKS[track].t); }
+  audio.addEventListener('ended',()=>{ setTrack(track+1); if(playing) audio.play().catch(()=>{}); });
   try{ localStorage.removeItem('ludos-musica'); }catch(e){}
   const pref=()=>{try{return sessionStorage.getItem('ludos-musica')}catch(e){return null}};
   const savePref=v=>{try{sessionStorage.setItem('ludos-musica',v)}catch(e){}};
