@@ -101,11 +101,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .quote cite{font-style:normal;font-weight:900}
 
 /* violín + frase */
-.detail{position:relative;padding-block:30px 0;overflow:hidden}
-.detail .pillbox{margin-left:36%;background:var(--pill);border-radius:213px 0 0 213px;min-height:clamp(220px,22.3vw,321px);display:flex;align-items:center;padding:40px clamp(20px,6vw,100px) 40px clamp(90px,14vw,170px)}
-.detail .pillbox p{margin:0;color:#fff;text-transform:uppercase;font-size:clamp(20px,2.85vw,41px);line-height:1.31;font-weight:300;letter-spacing:.01em}
+/* Violín horizontal, cortado en el borde izquierdo, con la voluta dentro del extremo redondo de la cápsula gris (diseño Figma).
+   --ph: alto de la cápsula. El violín mide 2,708 veces ese alto y su voluta (97,5% de la imagen) entra 0,533 alto en la cápsula. */
+.detail{--ph:clamp(220px,22.3vw,400px);--pl:36%;position:relative;padding-block:30px 0;overflow:hidden}
+.detail .pillbox{margin-left:var(--pl);background:var(--pill);border-radius:999px 0 0 999px;min-height:var(--ph);display:flex;align-items:center;padding:30px clamp(20px,6vw,100px) 30px calc(var(--ph)*.533 + clamp(24px,4.5vw,80px))}
+.detail .pillbox p{margin:0;color:#fff;text-transform:uppercase;font-size:clamp(20px,2.85vw,51px);line-height:1.31;font-weight:300;letter-spacing:.01em}
 .detail .pillbox b{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600}
-.detail img{position:absolute;left:-2%;top:50%;transform:translateY(-38%) rotate(-2deg);width:min(48%,620px);filter:drop-shadow(0 14px 18px rgba(0,0,0,.35));pointer-events:none}
+.detail img{position:absolute;width:calc(var(--ph)*2.708);max-width:none;left:calc(var(--pl) + var(--ph)*.533 - var(--ph)*2.708*.975);top:calc(50% + 15px);transform:translateY(-50%);filter:drop-shadow(0 10px 14px rgba(0,0,0,.25));pointer-events:none}
 
 .cta-band{background:#1a1a1a url(img/cuerdas-oscuro.jpg) center 60%/cover;position:relative}
 .cta-band::before{content:"";position:absolute;inset:0;background:rgba(20,20,20,.45)}
@@ -312,9 +314,8 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
   .hero .tag p{margin-bottom:16px}
   .members{grid-template-columns:repeat(2,1fr)}
   .member:nth-child(even){margin-top:30px}
+  .detail{--pl:40%}
   .quotes{grid-template-columns:repeat(2,1fr)}
-  .detail .pillbox{margin-left:18%;padding-left:clamp(60px,18vw,120px)}
-  .detail img{width:52%;top:30%}
   footer .wrap{grid-template-columns:1fr 1fr}
   footer .logo{grid-column:1/-1}
   .exp-top,.row,.contact{grid-template-columns:1fr}
@@ -329,14 +330,11 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 }
 @media (max-width:520px){
   .quotes{grid-template-columns:1fr}
-  .detail .pillbox{margin-left:0;border-radius:0;padding:150px 20px 40px}
-  .detail img{width:86%;top:24px;left:4%;transform:rotate(-3deg)}
   form,.help{grid-template-columns:1fr}
   footer .wrap{grid-template-columns:1fr}
   .nav ul{gap:14px}
   .nav a{font-size:11px;letter-spacing:.03em}
   .peek{display:none}
-  .detail .pillbox{background:var(--ink-2)}
   .exp-top p{text-align:left;hyphens:manual}
   .contact .side{min-height:460px;background-position:center 85%;padding-top:44px}
   .contact .side::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.35) 45%,transparent 65%)}
@@ -348,6 +346,11 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
   .hero .wrap{padding-top:116vw}
   .hero .logo{width:min(220px,60vw)}
   .intro{padding-top:48px}
+  /* Mismo violín y cápsula que en el computador, a escala de celular */
+  .detail{--ph:124px;--pl:42%}
+  .detail .pillbox{padding:18px 14px 18px calc(var(--ph)*.533 + 14px)}
+  .detail .pillbox p{font-size:12.5px;line-height:1.3;letter-spacing:.02em}
+  .detail .pillbox br{display:none}
   .intro p{text-align:left;hyphens:manual}
 }
 @media (max-width:400px){
@@ -414,7 +417,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 
     <div class="detail">
       <img src="img/violin.webp" alt="" loading="lazy">
-      <div class="pillbox"><p>Un detalle que cambia<br>la forma en que se<br><b>vive una celebración.</b></p></div>
+      <div class="pillbox"><p>Un detalle que cambia <br>la forma en que se <br><b>vive una celebración.</b></p></div>
     </div>
   </div>
 
