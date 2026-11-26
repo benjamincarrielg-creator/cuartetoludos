@@ -68,9 +68,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 /* HOME: hero */
 .hero{position:relative;background:#111 url(img/hero.jpg) center 45%/cover no-repeat;min-height:clamp(420px,42vw,1000px);display:flex;align-items:center}
 .hero::after{content:"";position:absolute;inset:auto 0 0;height:7%;background:linear-gradient(rgba(235,235,235,0),var(--paper))}
-.hero .wrap{position:relative;z-index:1;width:100%;display:flex;justify-content:space-between;align-items:center;gap:32px;padding-block:40px 60px}
-.hero .logo{width:clamp(150px,21vw,300px)}
-.hero .tag{color:var(--light);text-transform:uppercase;font-weight:500;font-size:clamp(13px,1.32vw,19px);line-height:1.3;letter-spacing:.03em;max-width:16em}
+/* Los músicos ocupan del 31,5% al 70% del ancho de la foto: logo y frase van en las columnas de los costados */
+.hero .wrap{position:relative;z-index:1;width:100%;max-width:none;display:grid;grid-template-columns:31.5fr 38.5fr 30fr;align-items:center;padding:40px 0 60px}
+.hero .logo{grid-column:1;justify-self:center;width:clamp(150px,21vw,440px)}
+.hero .tag{grid-column:3;justify-self:center;color:var(--light);text-transform:uppercase;font-weight:500;font-size:clamp(13px,1.32vw,26px);line-height:1.3;letter-spacing:.03em;max-width:min(16em,25vw)}
 .hero .tag p{margin:0 0 18px}
 
 .light{background:var(--paper);color:var(--text)}
@@ -243,7 +244,13 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width:860px){
-  .hero .wrap{flex-direction:column;align-items:flex-start;padding-block:28px 140px}
+  /* Tablet y celular: la foto del grupo arriba y el logo debajo, sobre fondo oscuro */
+  .hero{display:block;min-height:0;background:linear-gradient(rgba(20,20,20,0) 60vw,var(--ink) 86vw),url(img/hero.jpg) center top/160% auto no-repeat,var(--ink)}
+  .hero::after{display:none}
+  .hero .wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;padding:80vw max(24px,env(safe-area-inset-right,0px)) 48px max(24px,env(safe-area-inset-left,0px))}
+  .hero .logo{width:min(260px,40vw)}
+  .hero .tag{max-width:none}
+  .hero .tag p{margin-bottom:16px}
   .members{grid-template-columns:repeat(2,1fr)}
   .member:nth-child(even){margin-top:30px}
   .quotes{grid-template-columns:repeat(2,1fr)}
@@ -276,14 +283,11 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
   .contact .side::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.35) 45%,transparent 65%)}
   .contact .side h1{position:relative}
 }
-/* Celular: la foto del grupo arriba y el logo debajo, sobre fondo oscuro */
+/* Celular: la foto más grande, para que el grupo llene el ancho */
 @media (max-width:600px){
-  .hero{display:block;min-height:0;background:linear-gradient(rgba(20,20,20,0) 88vw,var(--ink) 124vw),url(img/hero.jpg) center top/230% auto no-repeat,var(--ink)}
-  .hero::after{display:none}
-  .hero .wrap{flex-direction:column;align-items:center;text-align:center;gap:22px;padding-block:116vw 48px}
+  .hero{background:linear-gradient(rgba(20,20,20,0) 88vw,var(--ink) 124vw),url(img/hero.jpg) center top/230% auto no-repeat,var(--ink)}
+  .hero .wrap{padding-top:116vw}
   .hero .logo{width:min(220px,60vw)}
-  .hero .tag{max-width:none}
-  .hero .tag p{margin-bottom:16px}
   .intro{padding-top:48px}
   .intro p{text-align:left;hyphens:manual}
 }
