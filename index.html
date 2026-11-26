@@ -257,7 +257,38 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 .chip:hover span{border-color:var(--gold-2)}
 .chip input:checked+span{background:var(--gold-grad);border-color:transparent;color:#1a1a1a;font-weight:600}
 .chip input:focus-visible+span{outline:2px solid var(--gold-2);outline-offset:2px}
-.chips .otro{flex:1 1 160px;min-width:140px}
+.field[hidden]{display:none}
+#cform{grid-auto-flow:row dense} /* "¿Qué tipo?" va bajo Tipo de evento; la fecha sube a su lado */
+/* Menús desplegables (tipo de evento, comuna) y calendario */
+.dd{position:relative}
+.dd input{padding-right:28px;text-overflow:ellipsis}
+.dd input[readonly]{cursor:pointer}
+.dd .ic-r{position:absolute;right:2px;bottom:12px;width:16px;height:16px;color:#bdbdbd;pointer-events:none;transition:transform .2s}
+.dd.open .ic-r.chev{transform:rotate(180deg)}
+.dd.open input{border-bottom-color:var(--gold-2)}
+.pop{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;background:#1a1a1a;border:1px solid #45423e;border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.55);padding:6px;max-height:290px;overflow:auto;overscroll-behavior:contain}
+.pop[hidden]{display:none}
+.opt{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:15px;color:#e7e3df;line-height:1.25}
+.opt small{font-size:11px;color:#8c8883;white-space:nowrap}
+.opt:hover,.opt.cur{background:#2c2a27;color:#fff}
+.opt.sel{color:var(--gold-2)}
+.pop .empty{padding:10px 12px;font-size:13px;line-height:1.35;color:#a9a49e}
+.cal{padding:14px 14px 8px;max-height:none;min-width:272px;right:auto;width:100%;max-width:340px}
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal-h b{font-weight:600;font-size:15px;color:#fff;text-transform:capitalize}
+.cal-h button{width:34px;height:34px;border:0;border-radius:50%;background:none;color:#e7e3df;font:inherit;font-size:20px;line-height:1;cursor:pointer}
+.cal-h button:hover:not(:disabled){background:#2c2a27;color:var(--gold-2)}
+.cal-h button:disabled{opacity:.2;cursor:default}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.cal-g i{font-style:normal;font-size:11px;font-weight:600;color:#8c8883;padding:4px 0 6px}
+.cal-g button{aspect-ratio:1;border:0;border-radius:50%;background:none;color:#e7e3df;font:inherit;font-size:14px;cursor:pointer;padding:0}
+.cal-g button:hover:not(:disabled){background:#2c2a27;color:#fff}
+.cal-g button:disabled{color:#4b4844;cursor:default}
+.cal-g button.today{box-shadow:inset 0 0 0 1px #6d6a66}
+.cal-g button.sel{background:var(--gold-grad);color:#1a1a1a;font-weight:700}
+.cal-f{display:flex;justify-content:space-between;margin-top:6px}
+.cal-f button{border:0;background:none;color:#bdbdbd;font:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:8px 6px}
+.cal-f button:hover{color:var(--gold-2)}
 .formside input{color-scheme:dark}
 .formside ::placeholder{color:#8c8883;opacity:1}
 .send{grid-column:1/-1;justify-self:end;background:none;border:0;color:#fff;cursor:pointer;padding:4px;display:flex;align-items:center;gap:10px;font-family:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
@@ -493,20 +524,24 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
         <div class="field full"><label for="f-nombre">Nombre y apellido</label><input id="f-nombre" name="nombre" autocomplete="name" required></div>
         <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel"></div>
-        <fieldset class="field full"><legend>Tipo de evento</legend>
-          <div class="chips">
-            <label class="chip"><input type="radio" name="tipo" value="Matrimonio"><span>Matrimonio</span></label>
-            <label class="chip"><input type="radio" name="tipo" value="Ceremonia religiosa"><span>Ceremonia religiosa</span></label>
-            <label class="chip"><input type="radio" name="tipo" value="Evento corporativo"><span>Evento corporativo</span></label>
-            <label class="chip"><input type="radio" name="tipo" value="Cumpleaños o aniversario"><span>Cumpleaños o aniversario</span></label>
-            <label class="chip"><input type="radio" name="tipo" value="Cóctel o recepción"><span>Cóctel o recepción</span></label>
-            <label class="chip"><input type="radio" name="tipo" value="Funeral o despedida"><span>Funeral o despedida</span></label>
-            <label class="chip"><input type="radio" name="tipo" value="Otro" id="f-tipo-otro"><span>Otro</span></label>
-            <input class="otro" id="f-otro" name="tipo_otro" placeholder="¿Cuál?" aria-label="Otro tipo de evento" hidden>
-          </div>
-        </fieldset>
-        <div class="field"><label for="f-fecha">Fecha del evento</label><input id="f-fecha" name="fecha" type="date"></div>
-        <div class="field"><label for="f-lugar">Comuna o ciudad</label><input id="f-lugar" name="lugar" autocomplete="address-level2"></div>
+        <div class="field dd" id="dd-tipo"><label for="f-tipo">Tipo de evento</label>
+          <input id="f-tipo" name="tipo" readonly placeholder="Elige una opción" autocomplete="off" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="ls-tipo">
+          <svg class="ic-r chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          <div class="pop" id="ls-tipo" role="listbox" hidden></div>
+        </div>
+        <div class="field full" id="otro-field" hidden><label for="f-otro">¿Qué tipo de evento?</label><input id="f-otro" name="tipo_otro" placeholder="Escríbelo aquí" autocomplete="off"></div>
+        <div class="field dd" id="dd-fecha"><label for="f-fecha">Fecha del evento</label>
+          <input id="f-fecha" readonly placeholder="Elige una fecha" autocomplete="off" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">
+          <input type="hidden" name="fecha" id="f-fecha-iso">
+          <svg class="ic-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+          <div class="pop cal" id="cal" role="dialog" aria-label="Calendario" hidden></div>
+        </div>
+        <div class="field dd" id="dd-lugar"><label for="f-lugar">Comuna o ciudad</label>
+          <input id="f-lugar" name="lugar" placeholder="Escribe para buscar" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ls-lugar">
+          <svg class="ic-r chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          <div class="pop" id="ls-lugar" role="listbox" hidden></div>
+        </div>
+        <div class="field"><label for="f-inv">N° aproximado de invitados</label><input id="f-inv" name="invitados" type="number" min="1" inputmode="numeric" placeholder="Ej: 120"></div>
         <fieldset class="field full"><legend>Momento a musicalizar <small>(puedes elegir varios)</small></legend>
           <div class="chips">
             <label class="chip"><input type="checkbox" name="momento" value="Ceremonia"><span>Ceremonia</span></label>
@@ -516,16 +551,6 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
             <label class="chip"><input type="checkbox" name="momento" value="Todo el evento"><span>Todo el evento</span></label>
           </div>
         </fieldset>
-        <fieldset class="field full"><legend>Estilo musical</legend>
-          <div class="chips">
-            <label class="chip"><input type="radio" name="estilo" value="Clásico"><span>Clásico</span></label>
-            <label class="chip"><input type="radio" name="estilo" value="Covers pop"><span>Covers pop</span></label>
-            <label class="chip"><input type="radio" name="estilo" value="Bandas sonoras"><span>Bandas sonoras</span></label>
-            <label class="chip"><input type="radio" name="estilo" value="Mixto"><span>Mixto</span></label>
-            <label class="chip"><input type="radio" name="estilo" value="Lo dejo a su criterio"><span>Lo dejo a su criterio</span></label>
-          </div>
-        </fieldset>
-        <div class="field"><label for="f-inv">N° aproximado de invitados</label><input id="f-inv" name="invitados" type="number" min="1" inputmode="numeric" placeholder="Ej: 120"></div>
         <div class="field full"><label for="f-msg">Cuéntanos más</label><textarea id="f-msg" name="mensaje" rows="3" placeholder="Canciones especiales, horarios, ideas o lo que quieras contarnos"></textarea></div>
         <button class="send" type="submit" aria-label="Enviar mensaje">Enviar <svg viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M0 10h24M15 1l9 9-9 9"/></svg></button>
         <p class="note" id="fnote" role="status"></p>
@@ -711,11 +736,149 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
   // La llave es pública por diseño: solo permite enviar mensajes a ese correo.
   const W3F_KEY='26f74c57-41bd-44f5-abaf-25cd0678e161';
   const form=document.getElementById('cform');
-  const otro=document.getElementById('f-otro');
-  form.querySelectorAll('input[name="tipo"]').forEach(r=>r.addEventListener('change',()=>{
-    otro.hidden=!document.getElementById('f-tipo-otro').checked;
-    if(!otro.hidden) otro.focus();
-  }));
+  const otroField=document.getElementById('otro-field'), otro=document.getElementById('f-otro');
+  const norm=t=>(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+
+  // Comunas de Chile (346), por región
+  const REGIONES={
+    'Arica y Parinacota':'Arica,Camarones,Putre,General Lagos',
+    'Tarapacá':'Iquique,Alto Hospicio,Pozo Almonte,Camiña,Colchane,Huara,Pica',
+    'Antofagasta':'Antofagasta,Mejillones,Sierra Gorda,Taltal,Calama,Ollagüe,San Pedro de Atacama,Tocopilla,María Elena',
+    'Atacama':'Copiapó,Caldera,Tierra Amarilla,Chañaral,Diego de Almagro,Vallenar,Alto del Carmen,Freirina,Huasco',
+    'Coquimbo':'La Serena,Coquimbo,Andacollo,La Higuera,Paihuano,Vicuña,Illapel,Canela,Los Vilos,Salamanca,Ovalle,Combarbalá,Monte Patria,Punitaqui,Río Hurtado',
+    'Valparaíso':'Valparaíso,Casablanca,Concón,Juan Fernández,Puchuncaví,Quintero,Viña del Mar,Isla de Pascua,Los Andes,Calle Larga,Rinconada,San Esteban,La Ligua,Cabildo,Papudo,Petorca,Zapallar,Quillota,La Calera,Hijuelas,La Cruz,Nogales,San Antonio,Algarrobo,Cartagena,El Quisco,El Tabo,Santo Domingo,San Felipe,Catemu,Llaillay,Panquehue,Putaendo,Santa María,Quilpué,Limache,Olmué,Villa Alemana',
+    'Metropolitana':'Santiago,Cerrillos,Cerro Navia,Conchalí,El Bosque,Estación Central,Huechuraba,Independencia,La Cisterna,La Florida,La Granja,La Pintana,La Reina,Las Condes,Lo Barnechea,Lo Espejo,Lo Prado,Macul,Maipú,Ñuñoa,Pedro Aguirre Cerda,Peñalolén,Providencia,Pudahuel,Quilicura,Quinta Normal,Recoleta,Renca,San Joaquín,San Miguel,San Ramón,Vitacura,Puente Alto,Pirque,San José de Maipo,Colina,Lampa,Tiltil,San Bernardo,Buin,Calera de Tango,Paine,Melipilla,Alhué,Curacaví,María Pinto,San Pedro,Talagante,El Monte,Isla de Maipo,Padre Hurtado,Peñaflor',
+    "O'Higgins":'Rancagua,Codegua,Coinco,Coltauco,Doñihue,Graneros,Las Cabras,Machalí,Malloa,Mostazal,Olivar,Peumo,Pichidegua,Quinta de Tilcoco,Rengo,Requínoa,San Vicente,Pichilemu,La Estrella,Litueche,Marchigüe,Navidad,Paredones,San Fernando,Chépica,Chimbarongo,Lolol,Nancagua,Palmilla,Peralillo,Placilla,Pumanque,Santa Cruz',
+    'Maule':'Talca,Constitución,Curepto,Empedrado,Maule,Pelarco,Pencahue,Río Claro,San Clemente,San Rafael,Cauquenes,Chanco,Pelluhue,Curicó,Hualañé,Licantén,Molina,Rauco,Romeral,Sagrada Familia,Teno,Vichuquén,Linares,Colbún,Longaví,Parral,Retiro,San Javier,Villa Alegre,Yerbas Buenas',
+    'Ñuble':'Chillán,Bulnes,Chillán Viejo,El Carmen,Pemuco,Pinto,Quillón,San Ignacio,Yungay,Quirihue,Cobquecura,Coelemu,Ninhue,Portezuelo,Ránquil,Treguaco,San Carlos,Coihueco,Ñiquén,San Fabián,San Nicolás',
+    'Biobío':'Concepción,Coronel,Chiguayante,Florida,Hualqui,Lota,Penco,San Pedro de la Paz,Santa Juana,Talcahuano,Tomé,Hualpén,Lebu,Arauco,Cañete,Contulmo,Curanilahue,Los Álamos,Tirúa,Los Ángeles,Antuco,Cabrero,Laja,Mulchén,Nacimiento,Negrete,Quilaco,Quilleco,San Rosendo,Santa Bárbara,Tucapel,Yumbel,Alto Biobío',
+    'La Araucanía':'Temuco,Carahue,Cunco,Curarrehue,Freire,Galvarino,Gorbea,Lautaro,Loncoche,Melipeuco,Nueva Imperial,Padre Las Casas,Perquenco,Pitrufquén,Pucón,Saavedra,Teodoro Schmidt,Toltén,Vilcún,Villarrica,Cholchol,Angol,Collipulli,Curacautín,Ercilla,Lonquimay,Los Sauces,Lumaco,Purén,Renaico,Traiguén,Victoria',
+    'Los Ríos':'Valdivia,Corral,Lanco,Los Lagos,Máfil,Mariquina,Paillaco,Panguipulli,La Unión,Futrono,Lago Ranco,Río Bueno',
+    'Los Lagos':'Puerto Montt,Calbuco,Cochamó,Fresia,Frutillar,Los Muermos,Llanquihue,Maullín,Puerto Varas,Castro,Ancud,Chonchi,Curaco de Vélez,Dalcahue,Puqueldón,Queilén,Quellón,Quemchi,Quinchao,Osorno,Puerto Octay,Purranque,Puyehue,Río Negro,San Juan de la Costa,San Pablo,Chaitén,Futaleufú,Hualaihué,Palena',
+    'Aysén':'Coyhaique,Lago Verde,Aysén,Cisnes,Guaitecas,Cochrane,OHiggins,Tortel,Chile Chico,Río Ibáñez',
+    'Magallanes':'Punta Arenas,Laguna Blanca,Río Verde,San Gregorio,Cabo de Hornos,Antártica,Porvenir,Primavera,Timaukel,Natales,Torres del Paine'
+  };
+  // Ciudades conocidas cuyo nombre no es el de su comuna
+  const CIUDADES=[['Puerto Natales','Natales','Magallanes'],['Puerto Aysén','Aysén','Aysén'],['Puerto Williams','Cabo de Hornos','Magallanes'],['Hanga Roa','Isla de Pascua','Valparaíso'],['Villa OHiggins','OHiggins','Aysén']];
+  const fixQ=t=>t.replace('OHiggins',"O'Higgins");
+  const LUGARES=[];
+  Object.entries(REGIONES).forEach(([r,list])=>list.split(',').forEach(c=>LUGARES.push({v:fixQ(c),r:r==='Metropolitana'?'Región Metropolitana':r})));
+  CIUDADES.forEach(([c,com,r])=>LUGARES.push({v:fixQ(c),r:'Comuna de '+fixQ(com)}));
+  LUGARES.forEach(it=>it.k=norm(it.v));
+  LUGARES.sort((a,b)=>a.v.localeCompare(b.v,'es'));
+
+  const TIPOS=['Matrimonio','Ceremonia religiosa','Evento corporativo','Cumpleaños o aniversario','Cóctel o recepción','Funeral o despedida','Otro'].map(v=>({v,k:norm(v)}));
+
+  // Cierra cualquier menú abierto al tocar fuera de él
+  const openers=[];
+  function closeAll(except){ openers.forEach(o=>{ if(o!==except) o.close(); }); }
+  document.addEventListener('pointerdown',e=>{ openers.forEach(o=>{ if(!o.field.contains(e.target)) o.close(); }); });
+
+  // Menú desplegable. search=true: se puede escribir para filtrar (comunas).
+  function dropdown(field,items,{search=false,onPick=null,max=400}={}){
+    const inp=field.querySelector('input'), pop=field.querySelector('.pop');
+    let shown=[], cur=-1;
+    const o={field,close(){ if(pop.hidden) return; pop.hidden=true; field.classList.remove('open'); inp.setAttribute('aria-expanded','false'); inp.removeAttribute('aria-activedescendant'); }};
+    openers.push(o);
+    function render(q){
+      const nq=norm(q);
+      shown = nq ? items.filter(it=>it.k.includes(nq)) : items;
+      if(nq) shown=[...shown].sort((a,b)=>(b.k.startsWith(nq)-a.k.startsWith(nq)) || a.v.localeCompare(b.v,'es'));
+      shown=shown.slice(0,max);
+      const val=norm(inp.value);
+      pop.innerHTML='';
+      shown.forEach((it,i)=>{
+        const d=document.createElement('div'); d.className='opt'+(it.k===val?' sel':''); d.id=pop.id+'-'+i; d.setAttribute('role','option');
+        d.textContent=it.v; if(it.r){ const sm=document.createElement('small'); sm.textContent=it.r; d.appendChild(sm); }
+        // mousedown evita que el campo pierda el foco; click (y no pointerdown) para que en el celular se pueda deslizar la lista sin elegir
+        d.addEventListener('mousedown',e=>e.preventDefault());
+        d.addEventListener('click',()=>pick(it));
+        pop.appendChild(d);
+      });
+      if(!shown.length){ const d=document.createElement('div'); d.className='empty'; d.textContent='No la encontramos en la lista. Puedes dejarla escrita así.'; pop.appendChild(d); }
+      cur=-1;
+    }
+    function open(){
+      closeAll(o);
+      const exact=items.some(it=>it.k===norm(inp.value));
+      render(search && !exact ? inp.value : '');
+      pop.hidden=false; field.classList.add('open'); inp.setAttribute('aria-expanded','true');
+      const sel=pop.querySelector('.sel'); if(sel) pop.scrollTop=sel.offsetTop-pop.clientHeight/2;
+      else pop.scrollTop=0;
+    }
+    function move(d){
+      if(pop.hidden) open();
+      const opts=pop.querySelectorAll('.opt'); if(!opts.length) return;
+      if(cur>=0) opts[cur].classList.remove('cur');
+      cur=(cur+d+opts.length)%opts.length;
+      opts[cur].classList.add('cur'); opts[cur].scrollIntoView({block:'nearest'});
+      inp.setAttribute('aria-activedescendant',opts[cur].id);
+    }
+    function pick(it){ inp.value=it.v; o.close(); if(onPick) onPick(it); }
+    inp.addEventListener('click',()=>{ if(pop.hidden) open(); else if(!search) o.close(); });
+    inp.addEventListener('focus',()=>{ if(search && pop.hidden) open(); });
+    if(search) inp.addEventListener('input',()=>{ if(pop.hidden) open(); else render(inp.value); });
+    inp.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'){ e.preventDefault(); move(1); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); move(-1); }
+      else if(e.key==='Enter'||(!search&&e.key===' ')){
+        if(!pop.hidden && cur>=0){ e.preventDefault(); pick(shown[cur]); }
+        else if(!search){ e.preventDefault(); pop.hidden?open():o.close(); }
+        else if(!pop.hidden){ e.preventDefault(); o.close(); }
+      }
+      else if(e.key==='Escape'||e.key==='Tab') o.close();
+    });
+    return o;
+  }
+  dropdown(document.getElementById('dd-tipo'),TIPOS,{onPick:it=>{
+    otroField.hidden = it.v!=='Otro';
+    if(!otroField.hidden) setTimeout(()=>otro.focus(),0);
+  }});
+  dropdown(document.getElementById('dd-lugar'),LUGARES,{search:true});
+
+  // Calendario en español (semana de lunes a domingo, sin fechas pasadas)
+  const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const calField=document.getElementById('dd-fecha'), cal=document.getElementById('cal');
+  const fIn=document.getElementById('f-fecha'), fIso=document.getElementById('f-fecha-iso');
+  const t0=new Date(); const today=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate());
+  let vy=today.getFullYear(), vm=today.getMonth(), selD=null;
+  const calO={field:calField,close(){ if(cal.hidden) return; cal.hidden=true; calField.classList.remove('open'); fIn.setAttribute('aria-expanded','false'); }};
+  openers.push(calO);
+  const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  function renderCal(){
+    const first=new Date(vy,vm,1), n=new Date(vy,vm+1,0).getDate(), lead=(first.getDay()+6)%7;
+    const atMin = vy===today.getFullYear() && vm===today.getMonth();
+    let h='<div class="cal-h"><button type="button" data-nav="-1" aria-label="Mes anterior"'+(atMin?' disabled':'')+'>‹</button><b>'+MESES[vm]+' '+vy+'</b><button type="button" data-nav="1" aria-label="Mes siguiente">›</button></div><div class="cal-g">';
+    ['L','M','M','J','V','S','D'].forEach(d=>h+='<i>'+d+'</i>');
+    for(let i=0;i<lead;i++) h+='<span></span>';
+    for(let d=1;d<=n;d++){
+      const dt=new Date(vy,vm,d), cls=[];
+      if(+dt===+today) cls.push('today'); if(selD && +dt===+selD) cls.push('sel');
+      h+='<button type="button" data-d="'+d+'" class="'+cls.join(' ')+'" aria-label="'+DIAS[dt.getDay()]+' '+d+' de '+MESES[vm]+' de '+vy+'"'+(dt<today?' disabled':'')+'>'+d+'</button>';
+    }
+    h+='</div><div class="cal-f"><button type="button" data-act="clear">Borrar</button><button type="button" data-act="close">Cerrar</button></div>';
+    cal.innerHTML=h;
+  }
+  function openCal(){
+    closeAll(calO);
+    if(selD){ vy=selD.getFullYear(); vm=selD.getMonth(); }
+    renderCal(); cal.hidden=false; calField.classList.add('open'); fIn.setAttribute('aria-expanded','true');
+  }
+  fIn.addEventListener('click',()=>{ cal.hidden?openCal():calO.close(); });
+  fIn.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '||e.key==='ArrowDown'){ e.preventDefault(); openCal(); } else if(e.key==='Escape') calO.close(); });
+  cal.addEventListener('keydown',e=>{ if(e.key==='Escape'){ calO.close(); fIn.focus(); } });
+  cal.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b||b.disabled) return;
+    if(b.dataset.nav){ vm+=+b.dataset.nav; if(vm<0){vm=11;vy--;} if(vm>11){vm=0;vy++;} renderCal(); return; }
+    if(b.dataset.act==='clear'){ selD=null; fIn.value=''; fIso.value=''; calO.close(); return; }
+    if(b.dataset.act==='close'){ calO.close(); return; }
+    if(b.dataset.d){
+      selD=new Date(vy,vm,+b.dataset.d);
+      fIn.value=DIAS[selD.getDay()].replace(/^./,c=>c.toUpperCase())+' '+selD.getDate()+' de '+MESES[selD.getMonth()]+' de '+selD.getFullYear();
+      fIso.value=iso(selD); calO.close(); fIn.focus();
+    }
+  });
   form.addEventListener('submit',async e=>{
     e.preventDefault();
     const n=document.getElementById('fnote');
@@ -725,9 +888,11 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
     try{
       const fd=new FormData(form);
       if(fd.get('botcheck')) return;
-      let tipo=fd.get('tipo')||'';
+      let tipo=(fd.get('tipo')||'').trim();
       if(tipo==='Otro' && (fd.get('tipo_otro')||'').trim()) tipo='Otro: '+fd.get('tipo_otro').trim();
-      const f=fd.get('fecha')||'', fecha=f?f.split('-').reverse().join('-'):'';
+      const fecha=fIn.value;
+      const lug=(fd.get('lugar')||'').trim(), lugIt=LUGARES.find(it=>it.k===norm(lug));
+      const lugar=lugIt?lugIt.v+' ('+lugIt.r+')':lug;
       const data={
         access_key:W3F_KEY,
         subject:'Nuevo mensaje desde la web: '+nom+(tipo?' ('+tipo+')':''),
@@ -738,16 +903,15 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
         'Teléfono':fd.get('telefono')||'',
         'Tipo de evento':tipo,
         'Fecha del evento':fecha,
-        'Comuna o ciudad':fd.get('lugar')||'',
+        'Comuna o ciudad':lugar,
         'Momento a musicalizar':fd.getAll('momento').join(', '),
-        'Estilo musical':fd.get('estilo')||'',
         'Invitados (aprox.)':fd.get('invitados')||'',
         'Mensaje':fd.get('mensaje')||''
       };
       const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
       const j=await r.json().catch(()=>({}));
       if(!r.ok||!j.success) throw new Error(j.message||r.status);
-      form.reset(); otro.hidden=true;
+      form.reset(); otroField.hidden=true; fIso.value=''; selD=null;
       n.textContent='¡Gracias, '+nom.split(' ')[0]+'! Recibimos tu mensaje y te contactaremos pronto.';
     }catch(err){
       n.textContent='No pudimos enviar el mensaje. Escríbenos directamente a cuartetoludos@gmail.com.';
