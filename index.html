@@ -46,7 +46,7 @@ h1,h2,h3{text-wrap:balance;margin:0;font-weight:400}
 /* ---------- NAV ---------- */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:linear-gradient(var(--ink),rgba(20,20,20,.92))}
-.nav ul{list-style:none;margin:0;padding-block:22px;display:flex;justify-content:space-between;gap:24px;overflow-x:auto;scrollbar-width:none}
+.nav ul{list-style:none;margin:0 auto;padding-block:22px;display:flex;justify-content:space-between;gap:24px;overflow-x:auto;scrollbar-width:none}
 .nav a{text-decoration:none;color:#d8d4d0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:300;white-space:nowrap;transition:color .2s}
 .nav a:hover{color:#fff}
 .nav a[aria-current="page"]{color:#fff;font-weight:600}
@@ -123,11 +123,11 @@ footer .logo{width:130px}
 /* ---------- EXPERIENCIAS ---------- */
 .exp-top{display:grid;grid-template-columns:1fr 1fr;background:var(--ink);color:#fff;position:relative}
 .exp-top .copy{padding:150px clamp(20px,6vw,64px) 80px max(24px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;justify-content:center}
-.exp-top .copy > *{max-width:420px;margin-left:auto}
+.exp-top .copy > *{max-width:420px;margin-left:auto;width:100%}
 .exp-top h1{text-transform:uppercase;font-size:clamp(26px,2.6vw,36px);line-height:1.12;font-weight:400;margin-bottom:34px}
 .exp-top p{margin:0 0 1.4em;font-size:15.5px;font-weight:300;text-align:justify;hyphens:auto}
 .exp-top p b{color:var(--gold);font-weight:600}
-.exp-top .btn{align-self:flex-start;margin-left:0;margin-top:14px}
+.exp-top .btn{margin-top:14px}
 .exp-top .photo{background:url(img/exp-escenario.jpg) center/cover;min-height:520px;filter:grayscale(1)}
 .exp-top .logo{position:absolute;left:50%;top:40px;transform:translateX(-50%);width:clamp(140px,13vw,190px);z-index:2}
 .row{display:grid;grid-template-columns:1fr 1fr;min-height:clamp(300px,25vw,400px)}
@@ -326,11 +326,13 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
   <div class="exp-top">
     <img class="logo" src="img/logo.png" alt="Ludos Cuarteto">
     <div class="copy">
+      <div class="inner">
       <h1>Música para<br>cada ocasión</h1>
       <p><b>Diseñamos experiencias musicales que se adaptan a distintos espacios, públicos y momentos,</b> manteniendo siempre un sello cercano, cuidado y de alto nivel artístico.</p>
       <p>Nuestra trayectoria incluye presentaciones en salas de concierto, espacios culturales y formatos no convencionales, lo que nos permite integrarnos con naturalidad en distintos contextos, desde escenarios íntimos hasta eventos de mayor escala.</p>
       <p>Más allá del formato, cada presentación se construye con intención: cuidar el ambiente, acompañar el momento y aportar una presencia musical que sume profundidad y carácter a la experiencia.</p>
       <a class="btn" href="#contacto">Agenda tu evento con nosotros</a>
+      </div>
     </div>
     <div class="photo" role="img" aria-label="Músico de cuerdas en un escenario frente al público"></div>
   </div>
