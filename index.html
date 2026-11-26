@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cuarteto Ludos | Cuarteto de cuerdas para matrimonios, conciertos y eventos</title>
+<meta name="description" content="Cuarteto Ludos: música en vivo para matrimonios, celebraciones, conciertos y eventos corporativos. Violín, viola y violoncello. Agenda tu evento con nosotros.">
+<meta name="theme-color" content="#141414">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cuarteto Ludos">
+<meta property="og:description" content="Música elegante para momentos inolvidables. Cuarteto de cuerdas para matrimonios, conciertos y eventos.">
+<meta property="og:locale" content="es_CL">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap">
+<style>
+/* Layout: sitio de 5 páginas (rutas por #), bandas a todo el ancho que alternan negro carbón y gris perla, con acento dorado. Diseño de un solo tema, fiel a los bocetos. */
+:root{
+  --ink:#141414;        /* negro carbón (nav, footer, fondos oscuros) */
+  --ink-2:#232323;      /* panel oscuro (contacto) */
+  --paper:#ebebeb;      /* gris perla de los bocetos */
+  --card:#f7f6f4;
+  --text:#2a2a2a;
+  --muted:#8a8784;
+  --cream:#faf6f4;      /* blanco del logo */
+  --gold:#c4923f;
+  --gold-2:#e2b968;
+  --pill:#bdbdbd;
+  --f:"Outfit","Avenir Next","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--f);font-weight:300;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{margin:0}
+img{max-width:100%;display:block}
+[hidden]{display:none!important}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold-2);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.gold{color:var(--gold)}
+h1,h2,h3{text-wrap:balance;margin:0;font-weight:400}
+
+/* ---------- NAV ---------- */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:linear-gradient(var(--ink),rgba(20,20,20,.92))}
+.nav ul{list-style:none;margin:0;padding-block:22px;display:flex;justify-content:space-between;gap:24px;overflow-x:auto;scrollbar-width:none}
+.nav a{text-decoration:none;color:#d8d4d0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:300;white-space:nowrap;transition:color .2s}
+.nav a:hover{color:#fff}
+.nav a[aria-current="page"]{color:#fff;font-weight:600}
+
+/* ---------- BOTONES ---------- */
+.btn{display:inline-flex;align-items:center;gap:.5em;padding:.7em 1.6em;border-radius:999px;text-decoration:none;color:#fff;font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  background:linear-gradient(#1a1a1a,#1a1a1a) padding-box,linear-gradient(100deg,#6b5a3e,var(--gold-2) 55%,#7a5a2a) border-box;border:1.5px solid transparent;cursor:pointer;font-family:inherit;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(196,146,63,.25)}
+
+/* ---------- PÁGINAS ---------- */
+.page{display:none}
+.page.on{display:block;animation:fade .5s ease}
+@keyframes fade{from{opacity:.4}to{opacity:1}}
+
+/* HOME: hero */
+.hero{position:relative;background:#111 url(img/hero.jpg) center 38%/cover no-repeat;min-height:clamp(420px,52vw,640px);display:flex;align-items:center}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:30%;background:linear-gradient(transparent,var(--paper))}
+.hero .wrap{position:relative;z-index:1;width:100%;display:flex;justify-content:space-between;align-items:center;gap:32px;padding-block:40px 120px}
+.hero .logo{width:clamp(150px,21vw,300px)}
+.hero .tag{color:#fff;text-transform:uppercase;font-weight:500;font-size:clamp(13px,1.3vw,17px);line-height:1.3;letter-spacing:.03em;max-width:16em}
+.hero .tag p{margin:0 0 18px}
+
+.light{background:var(--paper);color:var(--text)}
+.intro{padding-block:40px 70px}
+.intro p{max-width:640px;margin:0 auto 1.4em;font-size:clamp(16px,1.4vw,19px);font-weight:400;line-height:1.55}
+.intro b{color:var(--gold);font-weight:700}
+
+.members{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2vw,28px);max-width:820px;margin:0 auto;padding-bottom:90px}
+.member:nth-child(even){margin-top:44px}
+.member figure{margin:0}
+.member img{aspect-ratio:3/4.25;object-fit:cover;width:100%;box-shadow:0 2px 10px rgba(0,0,0,.12);filter:grayscale(1)}
+.member figcaption{margin-top:12px;line-height:1.2;text-transform:uppercase}
+.member strong{display:block;font-weight:700;letter-spacing:.02em}
+.member span{color:#555;font-size:14px}
+
+/* testimonios */
+.stories{position:relative;padding-block:20px 80px;overflow:hidden}
+.stories::before{content:"";position:absolute;inset:0;opacity:.5;background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='160' viewBox='0 0 600 160'%3E%3Cpath d='M0 40 C60 20 90 60 150 40 S240 20 300 44 S420 60 470 38 S560 20 600 40' fill='none' stroke='%23d8d4cf' stroke-width='3'/%3E%3Cpath d='M0 110 C50 100 80 125 140 112 S250 92 320 116 S440 128 500 106 S570 98 600 112' fill='none' stroke='%23e2c690' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/600px 160px repeat}
+.panel{position:relative;background:#fff;border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.12);padding:clamp(28px,4vw,52px) clamp(16px,2.5vw,28px) clamp(36px,5vw,70px);max-width:1080px;margin:0 auto}
+.panel h2{text-align:center;text-transform:uppercase;font-weight:500;font-size:clamp(20px,2.2vw,28px);color:#111;line-height:1.1}
+.panel .sub{text-align:center;font-size:clamp(16px,1.6vw,20px);margin:4px 0 36px;font-weight:400}
+.quotes{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.quote{background:var(--card);border-radius:16px;box-shadow:0 3px 8px rgba(0,0,0,.14);padding:24px 20px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.65;font-weight:400;min-width:0}
+.stars{color:var(--gold);letter-spacing:3px;font-size:15px}
+.quote blockquote{margin:0;flex:1}
+.quote cite{font-style:normal;font-weight:600}
+
+/* violín + frase */
+.detail{position:relative;padding-block:30px 0;overflow:hidden}
+.detail .pillbox{margin-left:36%;background:var(--pill);border-radius:120px 0 0 120px;min-height:220px;display:flex;align-items:center;padding:40px clamp(20px,6vw,100px) 40px clamp(90px,14vw,170px)}
+.detail .pillbox p{margin:0;color:#fff;text-transform:uppercase;font-size:clamp(20px,2.6vw,36px);line-height:1.2;font-weight:300;letter-spacing:.01em}
+.detail .pillbox b{color:var(--gold-2);font-weight:600}
+.detail img{position:absolute;left:-2%;top:50%;transform:translateY(-38%) rotate(-2deg);width:min(48%,620px);filter:drop-shadow(0 14px 18px rgba(0,0,0,.35));pointer-events:none}
+
+.cta-band{background:#1a1a1a url(img/cuerdas-oscuro.jpg) center 60%/cover;position:relative}
+.cta-band::before{content:"";position:absolute;inset:0;background:rgba(20,20,20,.45)}
+.cta-band .wrap{position:relative;display:flex;justify-content:space-around;gap:24px;flex-wrap:wrap;padding-block:clamp(60px,9vw,110px)}
+.cta-band a{color:#fff;font-size:clamp(17px,1.8vw,22px);letter-spacing:.04em;text-transform:uppercase;text-underline-offset:6px;text-decoration-thickness:1.5px}
+.cta-band a.strong{font-weight:700}
+.cta-band a:hover{color:var(--gold-2)}
+
+/* ---------- FOOTER ---------- */
+footer{background:var(--ink);color:#e9e5e1}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr auto;gap:32px;align-items:center;padding-block:56px}
+footer p{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.03em}
+footer b{font-weight:600}
+footer .social{display:flex;flex-direction:column;gap:22px}
+footer .social a{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font-size:13px;font-weight:600}
+footer .social a:hover{color:var(--gold-2)}
+footer .logo{width:130px}
+.sel{user-select:all}
+
+/* ---------- EXPERIENCIAS ---------- */
+.exp-top{display:grid;grid-template-columns:1fr 1fr;background:var(--ink);color:#fff;position:relative}
+.exp-top .copy{padding:150px clamp(20px,6vw,64px) 80px max(24px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;justify-content:center}
+.exp-top .copy > *{max-width:420px;margin-left:auto}
+.exp-top h1{text-transform:uppercase;font-size:clamp(26px,2.6vw,36px);line-height:1.12;font-weight:400;margin-bottom:34px}
+.exp-top p{margin:0 0 1.4em;font-size:15.5px;font-weight:300;text-align:justify;hyphens:auto}
+.exp-top p b{color:var(--gold);font-weight:600}
+.exp-top .btn{align-self:flex-start;margin-left:0;margin-top:14px}
+.exp-top .photo{background:url(img/exp-escenario.jpg) center/cover;min-height:520px;filter:grayscale(1)}
+.exp-top .logo{position:absolute;left:50%;top:40px;transform:translateX(-50%);width:clamp(140px,13vw,190px);z-index:2}
+.row{display:grid;grid-template-columns:1fr 1fr;min-height:clamp(300px,25vw,400px)}
+.row .img{position:relative;background-size:cover;background-position:center;display:grid;place-items:center}
+.row .img::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.22)}
+.row .img svg{position:relative;width:clamp(70px,8vw,100px);height:auto;color:#fff}
+.row .txt{background:var(--paper);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:48px clamp(20px,4vw,40px)}
+.row h2{text-transform:uppercase;font-size:clamp(22px,2.2vw,30px);line-height:1.15;color:#111;margin-bottom:22px;font-weight:500}
+.row p{margin:0;max-width:30em;font-weight:400;font-size:16px;line-height:1.7;color:#333}
+.row.flip .img{order:2}
+
+/* ---------- REPERTORIO ---------- */
+.rep{background:#0d0d0d;color:#fff;text-align:center}
+.rep .wrap{padding-block:60px 0;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+.rep .group{display:block;width:min(100%,1100px);margin:-40px auto 0;-webkit-mask-image:linear-gradient(transparent,#000 18%),linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(transparent,#000 18%),linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-composite:intersect}
+.rep h1{color:var(--gold);font-weight:600;font-size:clamp(26px,2.8vw,38px);text-transform:uppercase;letter-spacing:.01em;margin-bottom:16px}
+.rep p{max-width:620px;margin:0 0 1.5em;font-size:clamp(15px,1.4vw,18px);font-weight:400}
+.rep .btn{text-transform:none;letter-spacing:.01em;font-weight:300;font-style:italic;font-size:15px;padding:.7em 1.4em}
+.rep .btn b{font-style:normal;font-weight:700;text-decoration:underline}
+.rep small{display:block;font-style:italic;font-size:13px;margin:16px 0 24px}
+.playing{text-decoration:none;color:#fff;display:inline-flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,.8);border-radius:999px;padding:5px 18px 5px 5px;background:rgba(0,0,0,.4);max-width:100%}
+.playing .disc{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--gold-2),#8a6526);display:grid;place-items:center;flex:none}
+.playing .disc svg{width:14px;color:#1a1a1a}
+.playing strong{font-size:12px;letter-spacing:.06em;font-style:italic;white-space:nowrap}
+.marq{overflow:hidden;width:min(150px,36vw);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marq span{display:inline-block;white-space:nowrap;font-size:12px;letter-spacing:.06em;color:#cfcac5;animation:marq 10s linear infinite}
+.marq i{font-style:normal;padding-right:40px}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ---------- VIDEOS ---------- */
+.videos{background:linear-gradient(#141414,#000 40%);color:#fff;text-align:center;padding-block:40px 80px;overflow:hidden}
+.carousel{position:relative;display:flex;justify-content:center;align-items:center}
+.slide-main{position:relative;width:min(760px,82vw);aspect-ratio:16/9;max-width:100%;z-index:2;display:block;border-radius:2px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.slide-main img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.slide-main:hover img{transform:scale(1.03)}
+.slide-main .play{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(transparent 55%,rgba(0,0,0,.7))}
+.slide-main .play span{width:64px;height:64px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);display:grid;place-items:center;background:rgba(0,0,0,.35);backdrop-filter:blur(4px)}
+.peek{position:absolute;top:50%;width:min(760px,82vw);aspect-ratio:16/9;transform:translateY(-50%) scale(.86);opacity:.28;background-size:cover;background-position:center;z-index:1}
+.peek.l{right:calc(50% + min(380px,41vw) - 60px)}
+.peek.r{left:calc(50% + min(380px,41vw) - 60px)}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:none;border:0;color:#fff;cursor:pointer;padding:12px}
+.arrow.l{left:max(6px,calc(50% - min(380px,41vw) - 64px))}
+.arrow.r{right:max(6px,calc(50% - min(380px,41vw) - 64px))}
+.arrow svg{width:22px;height:40px}
+.vtitle{margin-top:30px}
+.vtitle h2{font-style:italic;text-transform:uppercase;font-weight:400;font-size:clamp(24px,3.2vw,40px);line-height:1.1}
+.vtitle div{text-transform:uppercase;font-size:clamp(16px,1.8vw,22px);font-weight:300;margin-top:6px}
+.dots{display:flex;gap:8px;justify-content:center;margin:22px 0 0}
+.dots button{width:8px;height:8px;border-radius:50%;border:0;background:#555;padding:0;cursor:pointer}
+.dots button[aria-current="true"]{background:var(--gold-2)}
+.videos hr{width:min(340px,60%);border:0;border-top:1px solid #777;margin:34px auto}
+.videos p{margin:0 auto;max-width:640px;font-weight:300;color:#ddd;font-size:15px}
+
+.classic{margin:56px auto 0;max-width:640px;text-align:left;display:flex;flex-direction:column;gap:18px}
+.classic h3{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:500;color:var(--gold-2);text-align:center}
+.classic ul{list-style:none;margin:0;padding:0;border-top:1px solid #333}
+.classic li a{display:flex;align-items:center;gap:16px;padding:14px 4px;border-bottom:1px solid #333;text-decoration:none;transition:background .2s}
+.classic li a:hover{background:rgba(255,255,255,.04)}
+.classic li a:hover .pl{border-color:var(--gold-2);color:var(--gold-2)}
+.classic .pl{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid #777;display:grid;place-items:center;font-size:11px;padding-left:2px;color:#ddd}
+.classic .w{display:flex;flex-direction:column;min-width:0;line-height:1.35}
+.classic b{font-weight:400;font-size:15px;color:#fff}
+.classic i{font-style:normal;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.classic .btn{align-self:center;margin-top:10px}
+
+/* ---------- CONTACTO ---------- */
+.contact{display:grid;grid-template-columns:1fr 1fr;min-height:620px}
+.contact .side{position:relative;background:#000 url(img/contacto.jpg) center 70%/cover;display:flex;align-items:flex-start;justify-content:flex-end;padding:120px clamp(20px,4vw,56px) 40px max(20px,env(safe-area-inset-left,0px))}
+.contact .side h1{color:#fff;text-transform:uppercase;font-size:clamp(34px,4.4vw,62px);line-height:1;font-weight:300;letter-spacing:.01em;text-align:right}
+.contact .side h1 span{display:block}
+.contact .side h1 .gold{padding-right:0}
+.contact .formside{background:var(--ink-2);color:#e7e3df;padding:60px max(24px,env(safe-area-inset-right,0px)) 50px clamp(24px,4vw,56px)}
+.contact h2{color:var(--gold);font-weight:700;font-size:clamp(28px,3vw,40px);text-transform:uppercase;margin-bottom:28px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:34px 36px}
+.field{display:flex;flex-direction:column;gap:10px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#bdb8b3}
+input,textarea{background:transparent;border:0;border-bottom:1px solid #8c8883;color:#fff;font-family:inherit;font-size:16px;padding:8px 0;outline:none;resize:vertical;width:100%}
+input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
+.send{grid-column:1/-1;justify-self:end;background:none;border:0;color:#fff;cursor:pointer;padding:4px;display:flex;align-items:center;gap:10px;font-family:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.send svg{width:26px}
+.send:hover{color:var(--gold-2)}
+.note{grid-column:1/-1;font-size:13px;color:var(--gold-2);margin:-14px 0 0;min-height:1em}
+.help{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px;font-size:12px;line-height:1.55;color:#cfcac5}
+.help p{margin:0}
+
+/* ---------- PLACEHOLDER ---------- */
+.ph{outline:1px dashed var(--gold-2);outline-offset:3px}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:860px){
+  .hero .wrap{flex-direction:column;align-items:flex-start;padding-block:28px 140px}
+  .members{grid-template-columns:repeat(2,1fr)}
+  .member:nth-child(even){margin-top:30px}
+  .quotes{grid-template-columns:repeat(2,1fr)}
+  .detail .pillbox{margin-left:18%;padding-left:clamp(60px,18vw,120px)}
+  .detail img{width:52%;top:30%}
+  footer .wrap{grid-template-columns:1fr 1fr}
+  footer .logo{grid-column:1/-1}
+  .exp-top,.row,.contact{grid-template-columns:1fr}
+  .exp-top .copy{padding:150px max(20px,env(safe-area-inset-right,0px)) 50px max(20px,env(safe-area-inset-left,0px))}
+  .exp-top .copy > *{margin-left:0;max-width:none}
+  .exp-top .photo{min-height:360px}
+  .row .img{min-height:260px}
+  .row.flip .img{order:0}
+  .contact .side{min-height:420px;justify-content:flex-start;padding-top:80px}
+  .contact .side h1{text-align:left}
+  .contact .formside{padding-left:max(20px,env(safe-area-inset-left,0px))}
+}
+@media (max-width:520px){
+  .quotes{grid-template-columns:1fr}
+  .detail .pillbox{margin-left:0;border-radius:0;padding:150px 20px 40px}
+  .detail img{width:86%;top:24px;left:4%;transform:rotate(-3deg)}
+  form,.help{grid-template-columns:1fr}
+  footer .wrap{grid-template-columns:1fr}
+  .nav ul{gap:14px}
+  .nav a{font-size:11px;letter-spacing:.03em}
+  .hero{background-position:62% 38%}
+  .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55),transparent 70%)}
+  .peek{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body>
+<nav class="nav" aria-label="Principal">
+  <ul class="wrap">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#experiencias">Experiencias</a></li>
+    <li><a href="#repertorio">Repertorio</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<main>
+<!-- ======================= HOME ======================= -->
+<section class="page" id="p-home" data-page="home">
+  <div class="hero">
+    <div class="wrap">
+      <img class="logo" src="img/logo.png" alt="Ludos Cuarteto">
+      <div class="tag">
+        <p>Música elegante para<br>momentos inolvidables</p>
+        <a class="btn" href="#contacto">Contacto</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="light">
+    <div class="wrap intro">
+      <p>A través del sonido íntimo de las cuerdas, damos vida a celebraciones, conciertos y encuentros especiales con una propuesta cercana, emotiva y cuidadosamente interpretada.</p>
+      <p>Cada presentación está pensada para conectar con las personas y crear una atmósfera que se sienta <b>única y memorable.</b></p>
+    </div>
+
+    <div class="wrap">
+      <div class="members">
+        <div class="member"><figure><img src="img/byron.jpg" alt="Byron López tocando el violín" loading="lazy"><figcaption><strong>Byron López</strong><span>Violín</span></figcaption></figure></div>
+        <div class="member"><figure><img src="img/fabian.jpg" alt="Fabián Esparza tocando el violín" loading="lazy"><figcaption><strong>Fabián Esparza</strong><span>Violín</span></figcaption></figure></div>
+        <div class="member"><figure><img src="img/sashio.jpg" alt="Sashio Carriel tocando la viola" loading="lazy"><figcaption><strong>Sashio Carriel</strong><span>Viola</span></figcaption></figure></div>
+        <div class="member"><figure><img src="img/david.jpg" alt="David Carrasco tocando el violoncello" loading="lazy"><figcaption><strong>David Carrasco</strong><span>Violoncello</span></figcaption></figure></div>
+      </div>
+    </div>
+
+    <div class="stories">
+      <div class="wrap">
+        <div class="panel">
+          <h2>Historias que nos acompañan</h2>
+          <p class="sub">Quienes confiaron en nosotros</p>
+          <div class="quotes">
+            <figure class="quote"><div class="stars" aria-label="5 de 5 estrellas">★★★★★</div><blockquote>“Me pareció un espectáculo perfecto, los músicos se pasaron. Muy linda noche.”</blockquote><cite>- Anónimo</cite></figure>
+            <figure class="quote"><div class="stars" aria-label="5 de 5 estrellas">★★★★★</div><blockquote>“Superó mis expectativas. El ambiente y la música crean una magia especial.”</blockquote><cite>- Anónimo</cite></figure>
+            <figure class="quote"><div class="stars" aria-label="5 de 5 estrellas">★★★★★</div><blockquote>“Fue el momento más emocionante de nuestra ceremonia. El cuarteto hizo que nuestro matrimonio se sintiera mágico.”</blockquote><cite>- Anónimo</cite></figure>
+            <figure class="quote"><div class="stars" aria-label="5 de 5 estrellas">★★★★★</div><blockquote>“Increíble experiencia, coordinación perfecta y gran profesionalismo.”</blockquote><cite>- Anónimo</cite></figure>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail">
+      <img src="img/violin.webp" alt="" loading="lazy">
+      <div class="pillbox"><p>Un detalle que cambia<br>la forma en que se<br><b>vive una celebración.</b></p></div>
+    </div>
+  </div>
+
+  <div class="cta-band">
+    <div class="wrap">
+      <a class="strong ph" href="https://www.instagram.com/cuartetoludos/" target="_blank" rel="noopener" title="Pendiente: ¿dónde se publican los próximos conciertos?">Próximos conciertos</a>
+      <a href="#contacto">Contrataciones</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= EXPERIENCIAS ======================= -->
+<section class="page" id="p-experiencias" data-page="experiencias">
+  <div class="exp-top">
+    <img class="logo" src="img/logo.png" alt="Ludos Cuarteto">
+    <div class="copy">
+      <h1>Música para<br>cada ocasión</h1>
+      <p><b>Diseñamos experiencias musicales que se adaptan a distintos espacios, públicos y momentos,</b> manteniendo siempre un sello cercano, cuidado y de alto nivel artístico.</p>
+      <p>Nuestra trayectoria incluye presentaciones en salas de concierto, espacios culturales y formatos no convencionales, lo que nos permite integrarnos con naturalidad en distintos contextos, desde escenarios íntimos hasta eventos de mayor escala.</p>
+      <p>Más allá del formato, cada presentación se construye con intención: cuidar el ambiente, acompañar el momento y aportar una presencia musical que sume profundidad y carácter a la experiencia.</p>
+      <a class="btn" href="#contacto">Agenda tu evento con nosotros</a>
+    </div>
+    <div class="photo" role="img" aria-label="Músico de cuerdas en un escenario frente al público"></div>
+  </div>
+
+  <div class="row">
+    <div class="img" style="background-image:url(img/exp-matrimonio.jpg)">
+      <svg viewBox="0 0 100 90" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" aria-hidden="true"><path d="M26 6h16l6 8-14 12-14-12z"/><path d="M20 14h28"/><circle cx="34" cy="56" r="26"/><circle cx="64" cy="56" r="26"/></svg>
+    </div>
+    <div class="txt"><h2>Matrimonios y<br>celebraciones</h2><p>Música en vivo para ceremonias, cócteles y momentos especiales, acompañando cada instante con sensibilidad y elegancia.</p></div>
+  </div>
+  <div class="row flip">
+    <div class="img" style="background-image:url(img/exp-concierto.jpg)">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M70 10l10 6-4 6-8-4z"/><path d="M68 20L40 52"/><path d="M40 52c-6-6-16-4-18 4-1 4 2 6 0 10-3 6-14 6-14 16 0 6 6 10 12 10 10 0 10-11 16-14 4-2 6 1 10 0 8-2 10-12 4-18z"/><path d="M28 70l6 6"/><path d="M30 92L92 14"/></svg>
+    </div>
+    <div class="txt"><h2>Conciertos en<br>salas y teatros</h2><p>Presentaciones pensadas para una escucha profunda. Un espacio ideal para dejarse llevar por la música y vivir una experiencia íntima.</p></div>
+  </div>
+  <div class="row">
+    <div class="img" style="background-image:url(img/exp-corporativo.jpg)">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 36l18-4 4 22c1 8-4 14-11 15l3 18"/><path d="M28 87l14-3"/><path d="M78 36l-18-4-4 22c-1 8 4 14 11 15l-3 18"/><path d="M72 87l-14-3"/><path d="M50 8v10M36 14l5 7M64 14l-5 7"/></svg>
+    </div>
+    <div class="txt"><h2>Eventos<br>corporativos</h2><p>Presentaciones que aportan identidad y distinción, creando un ambiente cuidado y memorable para cada ocasión.</p></div>
+  </div>
+</section>
+
+<!-- ======================= REPERTORIO ======================= -->
+<section class="page" id="p-repertorio" data-page="repertorio">
+  <div class="rep">
+    <div class="wrap">
+      <h1>Tu música, en cuerdas</h1>
+      <p>Desde clásicos inolvidables hasta versiones instrumentales de música contemporánea, construimos una propuesta musical que se adapta al estilo de cada celebración.</p>
+      <p>Cada experiencia se define de manera personalizada, considerando el momento, la energía y la identidad de cada evento.</p>
+      <a class="btn" href="#contacto" data-msg="Hola, me gustaría recibir el repertorio completo.">Solicitar repertorio completo&nbsp;<b>AQUÍ</b></a>
+      <small>¿Tienes una canción especial? Podemos adaptarla para tu evento.</small>
+      <a class="playing" href="https://www.youtube.com/watch?v=-z6ye88ylR0" target="_blank" rel="noopener" title="Escuchar Ordinary en YouTube">
+        <span class="disc"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 18V6l11-2v12" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></span>
+        <strong>Ahora suena:</strong>
+        <div class="marq"><span><i>ORDINARY – ALEX WARREN</i><i>ORDINARY – ALEX WARREN</i></span></div>
+      </a>
+    </div>
+    <img class="group" src="img/repertorio.jpg" alt="Los cuatro integrantes de Cuarteto Ludos con sus instrumentos frente a un muro de ladrillo negro">
+  </div>
+</section>
+
+<!-- ======================= VIDEOS ======================= -->
+<section class="page" id="p-videos" data-page="videos">
+  <div class="videos">
+    <div class="carousel">
+      <div class="peek l" id="peekL"></div>
+      <button class="arrow l" id="prev" aria-label="Video anterior"><svg viewBox="0 0 22 40" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 2L2 20l18 18"/></svg></button>
+      <a class="slide-main" id="vlink" href="https://www.youtube.com/watch?v=ZnnyXJF3ucM" target="_blank" rel="noopener">
+        <img id="vimg" src="img/video2.jpg" alt="">
+        <span class="play"><span><svg width="22" viewBox="0 0 22 24" fill="#fff" aria-hidden="true"><path d="M2 1l19 11L2 23z"/></svg></span></span>
+      </a>
+      <button class="arrow r" id="next" aria-label="Video siguiente"><svg viewBox="0 0 22 40" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 2l18 18L2 38"/></svg></button>
+      <div class="peek r" id="peekR"></div>
+    </div>
+    <div class="wrap">
+      <div class="vtitle" aria-live="polite"><h2 id="vt">Dancing in the Moonlight</h2><div id="vs">(Toploader) – Cover Cuarteto Ludos</div></div>
+      <div class="dots" id="dots"></div>
+      <hr>
+      <p>Una selección de canciones que hemos adaptado para cuarteto de cuerdas.<br>Distintas formas de acercarse a la música, manteniendo siempre su esencia.</p>
+      <div class="classic">
+        <h3>También en nuestro canal</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/watch?v=3s8EfH3eHXk" target="_blank" rel="noopener"><span class="pl">▶</span><span class="w"><b>Cuarteto de cuerdas Op. 77 N° 2</b><i>Joseph Haydn</i></span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=mqc45ADQtPs" target="_blank" rel="noopener"><span class="pl">▶</span><span class="w"><b>Coral N° 1 «Aus meines Herzens Grunde», BWV 269</b><i>Johann Sebastian Bach</i></span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=vRQRChp2qr0" target="_blank" rel="noopener"><span class="pl">▶</span><span class="w"><b>Crisantemi (extracto I)</b><i>Giacomo Puccini</i></span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=5gJA-x0Oa4Q" target="_blank" rel="noopener"><span class="pl">▶</span><span class="w"><b>Crisantemi (extracto II)</b><i>Giacomo Puccini</i></span></a></li>
+        </ul>
+        <a class="btn" href="https://www.youtube.com/@CuartetoLudos" target="_blank" rel="noopener"><svg width="15" height="14" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="22" height="16" rx="4"/><path d="M10 5.5v7l6-3.5z" fill="currentColor" stroke="none"/></svg> Ver canal de YouTube</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CONTACTO ======================= -->
+<section class="page" id="p-contacto" data-page="contacto">
+  <div class="contact">
+    <div class="side"><h1><span>Agendemos</span><span>tu evento</span><span class="gold">musical</span></h1></div>
+    <div class="formside">
+      <h2>Contacto</h2>
+      <form id="cform" name="contacto" novalidate>
+        <p hidden><label>No llenar: <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
+        <div class="field full"><label for="f-nombre">Nombre y apellido</label><input id="f-nombre" name="nombre" autocomplete="name" required></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel"></div>
+        <div class="field full"><label for="f-msg">Mensaje</label><textarea id="f-msg" name="mensaje" rows="2"></textarea></div>
+        <button class="send" type="submit" aria-label="Enviar mensaje">Enviar <svg viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M0 10h24M15 1l9 9-9 9"/></svg></button>
+        <p class="note" id="fnote" role="status"></p>
+      </form>
+      <div class="help">
+        <p>Cuéntanos sobre tu evento, el tipo de ambiente que te gustaría crear y cualquier detalle que consideres importante. Cada propuesta se construye de manera personalizada, cuidando que la música se integre de forma natural al momento.</p>
+        <p>Déjanos tus datos y nos pondremos en contacto contigo para acompañarte en el proceso y enviarte toda la información necesaria.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p><b>Producción:</b> Sashio Carriel</p>
+      <p><b>Teléfono:</b> <span class="sel">+56 9 7966 7849</span></p>
+      <p><b>Correo:</b> <span class="sel">cuartetoludos@gmail.com</span></p>
+    </div>
+    <div class="social">
+      <a href="https://www.instagram.com/cuartetoludos/" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@cuartetoludos</a>
+      <a href="https://www.youtube.com/@CuartetoLudos" target="_blank" rel="noopener"><svg width="15" height="14" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="22" height="16" rx="4"/><path d="M10 5.5v7l6-3.5z" fill="currentColor" stroke="none"/></svg>@CuartetoLudos</a>
+    </div>
+    <img class="logo" src="img/logo.png" alt="Ludos Cuarteto">
+  </div>
+</footer>
+
+<script>
+(function(){
+  const pages=[...document.querySelectorAll('.page')];
+  const links=[...document.querySelectorAll('.nav a')];
+  const names=pages.map(p=>p.dataset.page);
+  function show(){
+    let h=(location.hash||'#home').slice(1);
+    if(!names.includes(h)) h='home';
+    pages.forEach(p=>p.classList.toggle('on',p.dataset.page===h));
+    links.forEach(a=>{ if(a.getAttribute('href')==='#'+h) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',show); show();
+
+  // "Solicitar repertorio" rellena el mensaje
+  document.querySelectorAll('[data-msg]').forEach(a=>a.addEventListener('click',()=>{
+    const m=document.getElementById('f-msg'); if(m && !m.value) m.value=a.dataset.msg;
+  }));
+
+  // Carrusel de videos (títulos 2 y 3 pendientes)
+  const vids=[
+    {img:'img/video2.jpg',t:'Dancing in the Moonlight',s:'(Toploader) – Cover Cuarteto Ludos',u:'https://www.youtube.com/watch?v=ZnnyXJF3ucM'},
+    {img:'img/video3.jpg',t:'Ordinary',s:'(Alex Warren) – Cover Cuarteto Ludos',u:'https://www.youtube.com/watch?v=-z6ye88ylR0'},
+    {img:'img/video1.jpg',t:'Luminary',s:'(Joel Sunny) – Cover Cuarteto Ludos',u:'https://www.youtube.com/watch?v=sqvF4ZfOtzc'}
+  ];
+  let i=0;const dots=document.getElementById('dots');
+  vids.forEach((v,k)=>{const b=document.createElement('button');b.setAttribute('aria-label','Ir al video '+(k+1));b.onclick=()=>go(k);dots.appendChild(b);});
+  function go(k){
+    i=(k+vids.length)%vids.length;const v=vids[i];
+    document.getElementById('vimg').src=v.img;
+    document.getElementById('vlink').href=v.u;
+    document.getElementById('vlink').setAttribute('aria-label','Ver '+v.t+' en YouTube');
+    document.getElementById('vimg').alt='Video: '+v.t;
+    document.getElementById('vt').textContent=v.t;
+    document.getElementById('vs').textContent=v.s;
+    document.getElementById('peekL').style.backgroundImage='url('+vids[(i+vids.length-1)%vids.length].img+')';
+    document.getElementById('peekR').style.backgroundImage='url('+vids[(i+1)%vids.length].img+')';
+    [...dots.children].forEach((d,n)=>d.setAttribute('aria-current',n===i));
+  }
+  document.getElementById('prev').onclick=()=>go(i-1);
+  document.getElementById('next').onclick=()=>go(i+1);
+  go(0);
+
+  // Formulario de contacto (FormSubmit: envía los mensajes a cuartetoludos@gmail.com)
+  const form=document.getElementById('cform');
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const n=document.getElementById('fnote');
+    const nom=document.getElementById('f-nombre').value.trim(), em=document.getElementById('f-email').value.trim();
+    if(!nom||!/^\S+@\S+\.\S+$/.test(em)){n.textContent='Completa tu nombre y un email válido.';return;}
+    const btn=form.querySelector('.send'); btn.disabled=true; n.textContent='Enviando…';
+    try{
+      const data=Object.fromEntries(new FormData(form));
+      if(data._honey) return;
+      data._subject='Nuevo mensaje desde la web: '+nom;
+      data._template='table';
+      const r=await fetch('https://formsubmit.co/ajax/cuartetoludos@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok||String(j.success)==='false') throw new Error(j.message||r.status);
+      form.reset();
+      n.textContent='¡Gracias, '+nom.split(' ')[0]+'! Recibimos tu mensaje y te contactaremos pronto.';
+    }catch(err){
+      n.textContent='No pudimos enviar el mensaje. Escríbenos directamente a cuartetoludos@gmail.com o al +56 9 7966 7849.';
+    }finally{btn.disabled=false;}
+  });
+})();
+</script>
+</body>
+</html>
