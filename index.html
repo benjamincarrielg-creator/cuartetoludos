@@ -159,14 +159,20 @@ footer .logo{width:130px}
 .playing.on .disc{animation:spin 3s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ---------- MINI REPRODUCTOR (sigue sonando al cambiar de sección) ---------- */
-.mini{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(340px,calc(100vw - 32px));z-index:70;background:#111;border:1px solid #3a3a3a;border-radius:12px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.55)}
-.mini-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 6px 6px 14px;color:#eee;font-size:12px;letter-spacing:.04em}
-.mini-bar b{color:var(--gold-2);font-weight:600}
-.mini-bar button{background:none;border:0;color:#ccc;font-size:22px;line-height:1;cursor:pointer;padding:2px 8px;font-family:inherit}
-.mini-bar button:hover{color:#fff}
-.mini-frame{aspect-ratio:16/9;background:#000}
-.mini-frame iframe{width:100%;height:100%;border:0;display:block}
+/* ---------- MÚSICA DE FONDO ---------- */
+.sound{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:70;display:flex;align-items:center;gap:10px;height:48px;padding:0 16px 0 6px;border-radius:999px;border:1.5px solid transparent;cursor:pointer;color:#fff;font-family:inherit;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  background:linear-gradient(#141414,#141414) padding-box,linear-gradient(100deg,#6b5a3e,var(--gold-2) 55%,#7a5a2a) border-box;box-shadow:0 10px 28px rgba(0,0,0,.45);transition:transform .2s}
+.sound:hover{transform:translateY(-2px)}
+.sound .ic{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,var(--gold-2),#8a6526);color:#1a1a1a;flex:none}
+.sound .ic svg{width:18px;height:18px}
+.sound .bars{display:none;gap:2px;align-items:flex-end;height:14px}
+.sound .bars i{width:3px;background:var(--gold-2);border-radius:2px;animation:eq 1s ease-in-out infinite}
+.sound .bars i:nth-child(2){animation-delay:-.4s}.sound .bars i:nth-child(3){animation-delay:-.7s}
+@keyframes eq{0%,100%{height:4px}50%{height:14px}}
+.sound.on .bars{display:flex}
+.sound .on-ic,.sound.on .off-ic{display:none}
+.sound.on .on-ic{display:block}
+@media (max-width:520px){.sound .lbl{display:none}.sound{padding:0 6px;gap:8px}.sound.on{padding-right:12px}}
 @keyframes marq{to{transform:translateX(-50%)}}
 
 /* ---------- VIDEOS ---------- */
@@ -395,10 +401,10 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
       <p>Cada experiencia se define de manera personalizada, considerando el momento, la energía y la identidad de cada evento.</p>
       <a class="btn" href="#contacto" data-msg="Hola, me gustaría recibir el repertorio completo.">Solicitar repertorio completo&nbsp;<b>AQUÍ</b></a>
       <small>¿Tienes una canción especial? Podemos adaptarla para tu evento.</small>
-      <button class="playing" id="nowPlaying" type="button" aria-pressed="false" aria-controls="mini" title="Escuchar en el sitio">
+      <button class="playing" id="nowPlaying" type="button" aria-pressed="false" title="Escuchar o pausar la música">
         <span class="disc"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 18V6l11-2v12" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></span>
         <strong>Ahora suena:</strong>
-        <div class="marq"><span><i>HAYDN – CUARTETO OP. 77 N° 2</i><i>HAYDN – CUARTETO OP. 77 N° 2</i></span></div>
+        <div class="marq"><span><i>CUARTETO LUDOS – LUDOS SESSION</i><i>CUARTETO LUDOS – LUDOS SESSION</i></span></div>
       </button>
     </div>
     <img class="group" src="img/repertorio.jpg" alt="Los cuatro integrantes de Cuarteto Ludos con sus instrumentos frente a un muro de ladrillo negro">
@@ -461,10 +467,15 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
 </section>
 </main>
 
-<aside class="mini" id="mini" hidden aria-label="Reproductor de música">
-  <div class="mini-bar"><span><b>♪ Ahora suena:</b> Haydn, Cuarteto Op. 77 N° 2</span><button id="miniClose" type="button" aria-label="Cerrar reproductor">×</button></div>
-  <div class="mini-frame" id="miniFrame"></div>
-</aside>
+<audio id="bgm" src="audio/ludos-session-c2.mp3" loop preload="none"></audio>
+<button class="sound" id="soundBtn" type="button" aria-pressed="false" aria-label="Activar música de fondo">
+  <span class="ic">
+    <svg class="off-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+    <svg class="on-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+  </span>
+  <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="lbl" id="soundLbl">Música</span>
+</button>
 
 <footer>
   <div class="wrap">
@@ -502,21 +513,50 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
     const m=document.getElementById('f-msg'); if(m && !m.value) m.value=a.dataset.msg;
   }));
 
-  // "Ahora suena": reproduce la canción en un mini reproductor de YouTube
-  const SONG={id:'3s8EfH3eHXk',start:464,title:'Cuarteto Ludos – Haydn, Cuarteto Op. 77 N° 2'};
-  const mini=document.getElementById('mini'), frame=document.getElementById('miniFrame'), pill=document.getElementById('nowPlaying');
-  function openPlayer(){
-    if(!frame.firstChild){
-      const f=document.createElement('iframe');
-      f.src='https://www.youtube-nocookie.com/embed/'+SONG.id+'?start='+SONG.start+'&autoplay=1&rel=0&playsinline=1';
-      f.title=SONG.title; f.allow='autoplay; encrypted-media; picture-in-picture'; f.allowFullscreen=true;
-      frame.appendChild(f);
-    }
-    mini.hidden=false; pill.classList.add('on'); pill.setAttribute('aria-pressed','true');
+  // Música de fondo: suena bajito en todas las secciones.
+  // Los navegadores no dejan reproducir audio antes de que la persona toque la página,
+  // así que parte con el primer toque o clic (salvo que la haya silenciado antes).
+  const VOL=0.22;
+  const audio=document.getElementById('bgm'), btn=document.getElementById('soundBtn'), pill=document.getElementById('nowPlaying');
+  let ctx=null, gain=null, playing=false;
+  const pref=()=>{try{return localStorage.getItem('ludos-musica')}catch(e){return null}};
+  const savePref=v=>{try{localStorage.setItem('ludos-musica',v)}catch(e){}};
+  function setUI(on){
+    playing=on;
+    [btn,pill].forEach(el=>{el.classList.toggle('on',on);el.setAttribute('aria-pressed',String(on));});
+    btn.setAttribute('aria-label',on?'Silenciar música de fondo':'Activar música de fondo');
   }
-  function closePlayer(){ frame.innerHTML=''; mini.hidden=true; pill.classList.remove('on'); pill.setAttribute('aria-pressed','false'); }
-  pill.addEventListener('click',()=> mini.hidden ? openPlayer() : closePlayer());
-  document.getElementById('miniClose').addEventListener('click',closePlayer);
+  function ensureGraph(){
+    // Web Audio permite bajar el volumen también en iPhone (donde audio.volume no funciona)
+    if(ctx) return;
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;
+      ctx=new AC(); gain=ctx.createGain(); gain.gain.value=0;
+      ctx.createMediaElementSource(audio).connect(gain).connect(ctx.destination);
+    }catch(e){ ctx=null; gain=null; }
+  }
+  function fadeTo(v,secs){
+    if(gain){ const t=ctx.currentTime; gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(gain.gain.value,t); gain.gain.linearRampToValueAtTime(v,t+secs); }
+    else { audio.volume=Math.max(0,Math.min(1,v)); }
+  }
+  async function play(){
+    ensureGraph();
+    try{ if(ctx&&ctx.state==='suspended') await ctx.resume(); await audio.play(); setUI(true); fadeTo(VOL,2.5); }
+    catch(e){ setUI(false); }
+  }
+  function pause(){
+    setUI(false); fadeTo(0,.6);
+    setTimeout(()=>{ if(!playing) audio.pause(); },650);
+  }
+  function toggle(){ if(playing){ pause(); savePref('off'); } else { play(); savePref('on'); } }
+  btn.addEventListener('click',toggle);
+  pill.addEventListener('click',toggle);
+  const startOnFirstTouch=e=>{
+    if(btn.contains(e.target)||pill.contains(e.target)) return;
+    ['pointerdown','keydown','touchend','click'].forEach(t=>document.removeEventListener(t,startOnFirstTouch,true));
+    if(pref()!=='off' && !playing) play();
+  };
+  ['pointerdown','keydown','touchend','click'].forEach(t=>document.addEventListener(t,startOnFirstTouch,true));
 
   // Carrusel de videos (títulos 2 y 3 pendientes)
   const vids=[
