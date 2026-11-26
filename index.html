@@ -456,6 +456,8 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
     pages.forEach(p=>p.classList.toggle('on',p.dataset.page===h));
     links.forEach(a=>{ if(a.getAttribute('href')==='#'+h) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
     window.scrollTo(0,0);
+    // Inicio sin "#home" en la dirección
+    if(h==='home' && location.hash) history.replaceState(null,'',location.pathname+location.search);
   }
   window.addEventListener('hashchange',show); show();
 
