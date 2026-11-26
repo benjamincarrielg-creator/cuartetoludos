@@ -684,6 +684,28 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
   btn.addEventListener('click',toggle);
   pill.addEventListener('click',toggle);
 
+  // Al minimizar el navegador, cambiar de app o de pestaña, la música se pausa.
+  // Al volver a la página sigue sonando (si la persona no la había silenciado).
+  let resumeOnShow=false;
+  function hideStop(){
+    if(!playing) return;
+    resumeOnShow=true; setUI(false); audio.pause();
+    if(gain){ gain.gain.cancelScheduledValues(0); gain.gain.value=0; }
+    if(ctx && ctx.state==='running') ctx.suspend().catch(()=>{});
+  }
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){ hideStop(); return; }
+    if(!resumeOnShow || pref()==='off') return;
+    resumeOnShow=false;
+    play().then(()=>{
+      if(playing) return;
+      // Si el celular pide un toque para volver a sonar, parte con el siguiente toque
+      btn.classList.add('invite'); document.getElementById('soundLbl').textContent='Activar música';
+      EVS.forEach(t=>document.addEventListener(t,startOnFirstTouch,true));
+    });
+  });
+  window.addEventListener('pagehide',hideStop);
+
   function enter(){
     if(welcome.hidden || welcome.classList.contains('out')) return;
     if(!playing) play();
