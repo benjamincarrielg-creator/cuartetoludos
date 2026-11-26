@@ -457,7 +457,7 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
     <div class="formside">
       <h2>Contacto</h2>
       <form id="cform" name="contacto" novalidate>
-        <p hidden><label>No llenar: <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
+        <p hidden><label>No llenar: <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></p>
         <div class="field full"><label for="f-nombre">Nombre y apellido</label><input id="f-nombre" name="nombre" autocomplete="name" required></div>
         <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel"></div>
@@ -599,7 +599,9 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
   document.getElementById('next').onclick=()=>go(i+1);
   go(0);
 
-  // Formulario de contacto (FormSubmit: envía los mensajes a cuartetoludos@gmail.com)
+  // Formulario de contacto (Web3Forms: envía los mensajes a cuartetoludos@gmail.com).
+  // La llave es pública por diseño: solo permite enviar mensajes a ese correo.
+  const W3F_KEY='26f74c57-41bd-44f5-abaf-25cd0678e161';
   const form=document.getElementById('cform');
   form.addEventListener('submit',async e=>{
     e.preventDefault();
@@ -608,13 +610,21 @@ input:focus,textarea:focus{border-bottom-color:var(--gold-2)}
     if(!nom||!/^\S+@\S+\.\S+$/.test(em)){n.textContent='Completa tu nombre y un email válido.';return;}
     const btn=form.querySelector('.send'); btn.disabled=true; n.textContent='Enviando…';
     try{
-      const data=Object.fromEntries(new FormData(form));
-      if(data._honey) return;
-      data._subject='Nuevo mensaje desde la web: '+nom;
-      data._template='table';
-      const r=await fetch('https://formsubmit.co/ajax/cuartetoludos@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+      const fd=new FormData(form);
+      if(fd.get('botcheck')) return;
+      const data={
+        access_key:W3F_KEY,
+        subject:'Nuevo mensaje desde la web: '+nom,
+        from_name:'Sitio web Cuarteto Ludos',
+        replyto:em,
+        'Nombre':nom,
+        'Email':em,
+        'Teléfono':fd.get('telefono')||'',
+        'Mensaje':fd.get('mensaje')||''
+      };
+      const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
       const j=await r.json().catch(()=>({}));
-      if(!r.ok||String(j.success)==='false') throw new Error(j.message||r.status);
+      if(!r.ok||!j.success) throw new Error(j.message||r.status);
       form.reset();
       n.textContent='¡Gracias, '+nom.split(' ')[0]+'! Recibimos tu mensaje y te contactaremos pronto.';
     }catch(err){
