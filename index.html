@@ -140,7 +140,10 @@ footer .logo{width:130px}
 .row{display:grid;grid-template-columns:1fr 1fr;min-height:clamp(300px,35.2vw,507px)}
 .row .img{position:relative;background-size:cover;background-position:center;display:grid;place-items:center}
 .row .img::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.22)}
-.row .img svg{position:relative;width:clamp(70px,8vw,100px);height:auto;color:#fff}
+.row .experience-icon{position:relative;height:auto}
+.experience-icon.rings{width:min(23.2%,167px)}
+.experience-icon.violin{width:min(27%,194px)}
+.experience-icon.glasses{width:min(19.2%,138px)}
 .row .txt{background:var(--paper);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:48px clamp(20px,4vw,40px)}
 .row h2{text-transform:uppercase;font-size:clamp(24px,3.06vw,44px);line-height:1.16;color:var(--ink);margin-bottom:22px;font-weight:500}
 .row p{margin:0;max-width:22em;font-weight:400;font-size:clamp(16px,1.94vw,28px);line-height:1.65;color:var(--text)}
@@ -447,19 +450,19 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 
   <div class="row">
     <div class="img" style="background-image:url(img/exp-matrimonio.jpg)">
-      <svg viewBox="0 0 100 90" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" aria-hidden="true"><path d="M26 6h16l6 8-14 12-14-12z"/><path d="M20 14h28"/><circle cx="34" cy="56" r="26"/><circle cx="64" cy="56" r="26"/></svg>
+      <img class="experience-icon rings" src="img/anillos.png" width="502" height="447" alt="">
     </div>
     <div class="txt"><h2>Matrimonios y<br>celebraciones</h2><p>Música en vivo para ceremonias, cócteles y momentos especiales, acompañando cada instante con sensibilidad y elegancia.</p></div>
   </div>
   <div class="row flip">
     <div class="img" style="background-image:url(img/exp-concierto.jpg)">
-      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M70 10l10 6-4 6-8-4z"/><path d="M68 20L40 52"/><path d="M40 52c-6-6-16-4-18 4-1 4 2 6 0 10-3 6-14 6-14 16 0 6 6 10 12 10 10 0 10-11 16-14 4-2 6 1 10 0 8-2 10-12 4-18z"/><path d="M28 70l6 6"/><path d="M30 92L92 14"/></svg>
+      <img class="experience-icon violin" src="img/violin-arco.png" width="583" height="628" alt="">
     </div>
     <div class="txt"><h2>Conciertos en<br>salas y teatros</h2><p>Presentaciones pensadas para una escucha profunda. Un espacio ideal para dejarse llevar por la música y vivir una experiencia íntima.</p></div>
   </div>
   <div class="row">
     <div class="img" style="background-image:url(img/exp-corporativo.jpg)">
-      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 36l18-4 4 22c1 8-4 14-11 15l3 18"/><path d="M28 87l14-3"/><path d="M78 36l-18-4-4 22c-1 8 4 14 11 15l-3 18"/><path d="M72 87l-14-3"/><path d="M50 8v10M36 14l5 7M64 14l-5 7"/></svg>
+      <img class="experience-icon glasses" src="img/copas.png" width="414" height="470" alt="">
     </div>
     <div class="txt"><h2>Eventos<br>corporativos</h2><p>Presentaciones que aportan identidad y distinción, creando un ambiente cuidado y memorable para cada ocasión.</p></div>
   </div>
