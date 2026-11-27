@@ -263,9 +263,8 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 .chip input:checked+span{background:var(--gold-grad);border-color:transparent;color:#1a1a1a;font-weight:600}
 .chip input:focus-visible+span{outline:2px solid var(--gold-2);outline-offset:2px}
 .field[hidden]{display:none}
-.contact-details{grid-column:1/-1}
-.contact-details summary{width:fit-content;padding:8px 0;color:var(--gold-2);cursor:pointer}
-.detail-fields{display:grid;grid-template-columns:1fr 1fr;gap:24px 36px;margin-top:18px}
+.formside textarea{border:1px solid #8c8883;border-radius:6px;padding:12px;line-height:1.5}
+.formside textarea:focus{border-color:var(--gold-2)}
 /* Menús desplegables (tipo de evento, comuna) y calendario */
 .dd{position:relative}
 .dd input{padding-right:28px;text-overflow:ellipsis}
@@ -335,7 +334,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 }
 @media (max-width:520px){
   .quotes{grid-template-columns:1fr}
-  form,.help,.detail-fields{grid-template-columns:1fr}
+  form,.help{grid-template-columns:1fr}
   footer .wrap{grid-template-columns:1fr}
   .nav ul{gap:14px}
   .nav a{font-size:11px;letter-spacing:.03em}
@@ -558,14 +557,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
           <svg class="ic-r chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           <div class="pop" id="ls-lugar" role="listbox" hidden></div>
         </div>
-        <details class="contact-details">
-          <summary>Agregar detalles (opcional)</summary>
-          <div class="detail-fields">
-            <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel"></div>
-            <div class="field"><label for="f-inv">N° aproximado de invitados</label><input id="f-inv" name="invitados" type="number" min="1" inputmode="numeric" placeholder="Ej: 120"></div>
-            <div class="field full"><label for="f-msg">Cuéntanos más</label><textarea id="f-msg" name="mensaje" rows="3" placeholder="Canciones especiales, horarios, ideas o lo que quieras contarnos"></textarea></div>
-          </div>
-        </details>
+        <div class="field full"><label for="f-msg">Cuéntanos más <small>(opcional)</small></label><textarea id="f-msg" name="mensaje" rows="3" placeholder="Canciones especiales, horarios, ideas o lo que quieras contarnos"></textarea></div>
         <button class="send" type="submit">Consultar disponibilidad <svg viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M0 10h24M15 1l9 9-9 9"/></svg></button>
         <p class="note" id="fnote" role="status"></p>
       </form>
@@ -945,18 +937,16 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
         replyto:em,
         'Nombre':nom,
         'Email':em,
-        'Teléfono':fd.get('telefono')||'',
         'Tipo de evento':tipo,
         'Fecha del evento':fecha,
         'Comuna o ciudad':lugar,
         ...(tipo==='Matrimonio' ? {'Momento a musicalizar':fd.getAll('momento').join(', ')} : {}),
-        'Invitados (aprox.)':fd.get('invitados')||'',
         'Mensaje':fd.get('mensaje')||''
       };
       const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
       const j=await r.json().catch(()=>({}));
       if(!r.ok||!j.success) throw new Error(j.message||r.status);
-      form.reset(); form.querySelector('.contact-details').open=false; otroField.hidden=true; fIso.value=''; selD=null;
+      form.reset(); otroField.hidden=true; fIso.value=''; selD=null;
       n.textContent='¡Gracias, '+nom.split(' ')[0]+'! Recibimos tu mensaje y te contactaremos pronto.';
     }catch(err){
       n.textContent='No pudimos enviar el mensaje. Escríbenos directamente a cuartetoludos@gmail.com.';
