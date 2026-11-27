@@ -844,8 +844,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
       inp.setAttribute('aria-activedescendant',opts[cur].id);
     }
     function pick(it){ inp.value=it.v; o.close(); if(onPick) onPick(it); }
-    inp.addEventListener('click',()=>{ if(pop.hidden) open(); else if(!search) o.close(); });
-    inp.addEventListener('focus',()=>{ if(search && pop.hidden) open(); });
+    inp.addEventListener('click',()=>{ if(pop.hidden) open(); else o.close(); });
     if(search) inp.addEventListener('input',()=>{ if(pop.hidden) open(); else render(inp.value); });
     inp.addEventListener('keydown',e=>{
       if(e.key==='ArrowDown'){ e.preventDefault(); move(1); }
