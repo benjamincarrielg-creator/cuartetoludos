@@ -535,6 +535,15 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
           <svg class="ic-r chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           <div class="pop" id="ls-tipo" role="listbox" hidden></div>
         </div>
+        <fieldset class="field full" id="momento-field" hidden disabled><legend>Momento a musicalizar <small>(puedes elegir varios)</small></legend>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="momento" value="Ceremonia"><span>Ceremonia</span></label>
+            <label class="chip"><input type="checkbox" name="momento" value="Cóctel"><span>Cóctel</span></label>
+            <label class="chip"><input type="checkbox" name="momento" value="Cena"><span>Cena</span></label>
+            <label class="chip"><input type="checkbox" name="momento" value="Entrada o salida"><span>Entrada o salida</span></label>
+            <label class="chip"><input type="checkbox" name="momento" value="Todo el evento"><span>Todo el evento</span></label>
+          </div>
+        </fieldset>
         <div class="field full" id="otro-field" hidden><label for="f-otro">¿Qué tipo de evento?</label><input id="f-otro" name="tipo_otro" placeholder="Escríbelo aquí" autocomplete="off"></div>
         <div class="field dd" id="dd-fecha"><label for="f-fecha">Fecha del evento</label>
           <input id="f-fecha" readonly placeholder="Elige una fecha" autocomplete="off" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">
@@ -548,15 +557,6 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
           <div class="pop" id="ls-lugar" role="listbox" hidden></div>
         </div>
         <div class="field"><label for="f-inv">N° aproximado de invitados</label><input id="f-inv" name="invitados" type="number" min="1" inputmode="numeric" placeholder="Ej: 120"></div>
-        <fieldset class="field full" id="momento-field" hidden disabled><legend>Momento a musicalizar <small>(puedes elegir varios)</small></legend>
-          <div class="chips">
-            <label class="chip"><input type="checkbox" name="momento" value="Ceremonia"><span>Ceremonia</span></label>
-            <label class="chip"><input type="checkbox" name="momento" value="Cóctel"><span>Cóctel</span></label>
-            <label class="chip"><input type="checkbox" name="momento" value="Cena"><span>Cena</span></label>
-            <label class="chip"><input type="checkbox" name="momento" value="Entrada o salida"><span>Entrada o salida</span></label>
-            <label class="chip"><input type="checkbox" name="momento" value="Todo el evento"><span>Todo el evento</span></label>
-          </div>
-        </fieldset>
         <div class="field full"><label for="f-msg">Cuéntanos más</label><textarea id="f-msg" name="mensaje" rows="3" placeholder="Canciones especiales, horarios, ideas o lo que quieras contarnos"></textarea></div>
         <button class="send" type="submit" aria-label="Enviar mensaje">Enviar <svg viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M0 10h24M15 1l9 9-9 9"/></svg></button>
         <p class="note" id="fnote" role="status"></p>
