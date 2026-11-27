@@ -263,7 +263,9 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 .chip input:checked+span{background:var(--gold-grad);border-color:transparent;color:#1a1a1a;font-weight:600}
 .chip input:focus-visible+span{outline:2px solid var(--gold-2);outline-offset:2px}
 .field[hidden]{display:none}
-#cform{grid-auto-flow:row dense} /* "¿Qué tipo?" va bajo Tipo de evento; la fecha sube a su lado */
+.contact-details{grid-column:1/-1}
+.contact-details summary{width:fit-content;padding:8px 0;color:var(--gold-2);cursor:pointer}
+.detail-fields{display:grid;grid-template-columns:1fr 1fr;gap:24px 36px;margin-top:18px}
 /* Menús desplegables (tipo de evento, comuna) y calendario */
 .dd{position:relative}
 .dd input{padding-right:28px;text-overflow:ellipsis}
@@ -333,7 +335,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 }
 @media (max-width:520px){
   .quotes{grid-template-columns:1fr}
-  form,.help{grid-template-columns:1fr}
+  form,.help,.detail-fields{grid-template-columns:1fr}
   footer .wrap{grid-template-columns:1fr}
   .nav ul{gap:14px}
   .nav a{font-size:11px;letter-spacing:.03em}
@@ -527,10 +529,9 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
       <h2>Contacto</h2>
       <form id="cform" name="contacto" novalidate>
         <p hidden><label>No llenar: <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></p>
-        <div class="field full"><label for="f-nombre">Nombre y apellido</label><input id="f-nombre" name="nombre" autocomplete="name" required></div>
+        <div class="field"><label for="f-nombre">Nombre y apellido</label><input id="f-nombre" name="nombre" autocomplete="name" required></div>
         <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
-        <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel"></div>
-        <div class="field dd" id="dd-tipo"><label for="f-tipo">Tipo de evento</label>
+        <div class="field full dd" id="dd-tipo"><label for="f-tipo">Tipo de evento <small>(opcional)</small></label>
           <input id="f-tipo" name="tipo" readonly placeholder="Elige una opción" autocomplete="off" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="ls-tipo">
           <svg class="ic-r chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           <div class="pop" id="ls-tipo" role="listbox" hidden></div>
@@ -546,20 +547,26 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
           </div>
         </fieldset>
         <div class="field full" id="otro-field" hidden><label for="f-otro">¿Qué tipo de evento?</label><input id="f-otro" name="tipo_otro" placeholder="Escríbelo aquí" autocomplete="off"></div>
-        <div class="field dd" id="dd-fecha"><label for="f-fecha">Fecha del evento</label>
+        <div class="field dd" id="dd-fecha"><label for="f-fecha">Fecha del evento <small>(opcional)</small></label>
           <input id="f-fecha" readonly placeholder="Elige una fecha" autocomplete="off" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">
           <input type="hidden" name="fecha" id="f-fecha-iso">
           <svg class="ic-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
           <div class="pop cal" id="cal" role="dialog" aria-label="Calendario" hidden></div>
         </div>
-        <div class="field dd" id="dd-lugar"><label for="f-lugar">Comuna o ciudad</label>
+        <div class="field dd" id="dd-lugar"><label for="f-lugar">Comuna o ciudad <small>(opcional)</small></label>
           <input id="f-lugar" name="lugar" placeholder="Escribe para buscar" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ls-lugar">
           <svg class="ic-r chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           <div class="pop" id="ls-lugar" role="listbox" hidden></div>
         </div>
-        <div class="field"><label for="f-inv">N° aproximado de invitados</label><input id="f-inv" name="invitados" type="number" min="1" inputmode="numeric" placeholder="Ej: 120"></div>
-        <div class="field full"><label for="f-msg">Cuéntanos más</label><textarea id="f-msg" name="mensaje" rows="3" placeholder="Canciones especiales, horarios, ideas o lo que quieras contarnos"></textarea></div>
-        <button class="send" type="submit" aria-label="Enviar mensaje">Enviar <svg viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M0 10h24M15 1l9 9-9 9"/></svg></button>
+        <details class="contact-details">
+          <summary>Agregar detalles (opcional)</summary>
+          <div class="detail-fields">
+            <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel"></div>
+            <div class="field"><label for="f-inv">N° aproximado de invitados</label><input id="f-inv" name="invitados" type="number" min="1" inputmode="numeric" placeholder="Ej: 120"></div>
+            <div class="field full"><label for="f-msg">Cuéntanos más</label><textarea id="f-msg" name="mensaje" rows="3" placeholder="Canciones especiales, horarios, ideas o lo que quieras contarnos"></textarea></div>
+          </div>
+        </details>
+        <button class="send" type="submit">Consultar disponibilidad <svg viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M0 10h24M15 1l9 9-9 9"/></svg></button>
         <p class="note" id="fnote" role="status"></p>
       </form>
       <div class="help">
@@ -949,7 +956,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
       const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
       const j=await r.json().catch(()=>({}));
       if(!r.ok||!j.success) throw new Error(j.message||r.status);
-      form.reset(); otroField.hidden=true; fIso.value=''; selD=null;
+      form.reset(); form.querySelector('.contact-details').open=false; otroField.hidden=true; fIso.value=''; selD=null;
       n.textContent='¡Gracias, '+nom.split(' ')[0]+'! Recibimos tu mensaje y te contactaremos pronto.';
     }catch(err){
       n.textContent='No pudimos enviar el mensaje. Escríbenos directamente a cuartetoludos@gmail.com.';
