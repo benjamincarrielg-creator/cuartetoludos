@@ -795,7 +795,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
   LUGARES.forEach(it=>it.k=norm(it.v));
   LUGARES.sort((a,b)=>a.v.localeCompare(b.v,'es'));
 
-  const TIPOS=['Matrimonio','Ceremonia religiosa','Evento corporativo','Cumpleaños o aniversario','Cóctel o recepción','Funeral o despedida','Otro'].map(v=>({v,k:norm(v)}));
+  const TIPOS=['Matrimonio','Evento corporativo','Cumpleaños o aniversario','Funeral o despedida','Otro'].map(v=>({v,k:norm(v)}));
 
   // Cierra cualquier menú abierto al tocar fuera de él
   const openers=[];
