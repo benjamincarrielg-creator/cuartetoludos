@@ -548,7 +548,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
           <div class="pop" id="ls-lugar" role="listbox" hidden></div>
         </div>
         <div class="field"><label for="f-inv">N° aproximado de invitados</label><input id="f-inv" name="invitados" type="number" min="1" inputmode="numeric" placeholder="Ej: 120"></div>
-        <fieldset class="field full"><legend>Momento a musicalizar <small>(puedes elegir varios)</small></legend>
+        <fieldset class="field full" id="momento-field" hidden disabled><legend>Momento a musicalizar <small>(puedes elegir varios)</small></legend>
           <div class="chips">
             <label class="chip"><input type="checkbox" name="momento" value="Ceremonia"><span>Ceremonia</span></label>
             <label class="chip"><input type="checkbox" name="momento" value="Cóctel"><span>Cóctel</span></label>
@@ -858,7 +858,17 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
     });
     return o;
   }
+  const momentoField=document.getElementById('momento-field');
+  function mostrarMomentos(tipo){
+    const mostrar=tipo==='Matrimonio';
+    momentoField.hidden=!mostrar;
+    momentoField.disabled=!mostrar;
+    if(!mostrar) momentoField.querySelectorAll('input:checked').forEach(input=>{ input.checked=false; });
+  }
+  window.addEventListener('pageshow',()=>mostrarMomentos(document.getElementById('f-tipo').value));
+  form.addEventListener('reset',()=>mostrarMomentos(''));
   dropdown(document.getElementById('dd-tipo'),TIPOS,{onPick:it=>{
+    mostrarMomentos(it.v);
     otroField.hidden = it.v!=='Otro';
     if(!otroField.hidden) setTimeout(()=>otro.focus(),0);
   }});
@@ -932,7 +942,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
         'Tipo de evento':tipo,
         'Fecha del evento':fecha,
         'Comuna o ciudad':lugar,
-        'Momento a musicalizar':fd.getAll('momento').join(', '),
+        ...(tipo==='Matrimonio' ? {'Momento a musicalizar':fd.getAll('momento').join(', ')} : {}),
         'Invitados (aprox.)':fd.get('invitados')||'',
         'Mensaje':fd.get('mensaje')||''
       };
