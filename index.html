@@ -113,12 +113,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .cta-band::before{content:"";position:absolute;inset:0;background:rgba(20,20,20,.45)}
 .cta-band .wrap{position:relative;display:flex;justify-content:space-around;gap:24px;flex-wrap:wrap;padding-block:clamp(60px,9vw,110px)}
 .cta-band a{color:var(--light);font-weight:300;font-size:clamp(17px,2vw,29px);letter-spacing:.04em;text-transform:uppercase;text-underline-offset:6px;text-decoration-thickness:1.5px}
-.cta-band a.strong{font-weight:800}
 .cta-band a:hover{color:var(--gold-2)}
 
 /* ---------- FOOTER ---------- */
 footer{background:var(--ink);color:#e9e5e1}
-footer .social{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding-block:40px}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;padding-block:40px}
+footer .logo{width:130px;height:auto}
+footer .social{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
 footer .social a{display:inline-flex;min-height:44px;gap:12px;align-items:center;text-decoration:none;font-size:clamp(16px,1.5vw,21px);font-weight:500;color:var(--light)}
 footer .social a:hover{color:var(--gold-2)}
 .sel{user-select:all}
@@ -417,7 +418,7 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 
   <div class="cta-band">
     <div class="wrap">
-      <a class="strong" href="https://www.instagram.com/cuartetoludos/" target="_blank" rel="noopener">Próximos conciertos</a>
+      <a href="https://www.instagram.com/cuartetoludos/" target="_blank" rel="noopener">Próximos conciertos</a>
       <a href="#contacto">Contrataciones</a>
     </div>
   </div>
@@ -579,9 +580,12 @@ label.chip{position:relative;text-transform:none;letter-spacing:0;font-size:inhe
 </button>
 
 <footer>
-  <div class="wrap social">
-    <a aria-label="Instagram de Cuarteto Ludos" href="https://www.instagram.com/cuartetoludos/" target="_blank" rel="noopener"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@cuartetoludos</a>
-    <a aria-label="YouTube de Cuarteto Ludos" href="https://www.youtube.com/@CuartetoLudos" target="_blank" rel="noopener"><svg aria-hidden="true" width="22" height="17" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="22" height="16" rx="4"/><path d="M10 5.5v7l6-3.5z" fill="currentColor" stroke="none"/></svg>@CuartetoLudos</a>
+  <div class="wrap">
+    <div class="social">
+      <a aria-label="Instagram de Cuarteto Ludos" href="https://www.instagram.com/cuartetoludos/" target="_blank" rel="noopener"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@cuartetoludos</a>
+      <a aria-label="YouTube de Cuarteto Ludos" href="https://www.youtube.com/@CuartetoLudos" target="_blank" rel="noopener"><svg aria-hidden="true" width="22" height="17" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="22" height="16" rx="4"/><path d="M10 5.5v7l6-3.5z" fill="currentColor" stroke="none"/></svg>@CuartetoLudos</a>
+    </div>
+    <img class="logo" src="img/logo.png" alt="Ludos Cuarteto">
   </div>
 </footer>
 
